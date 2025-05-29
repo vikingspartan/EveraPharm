@@ -218,4 +218,135 @@ export function getPaginationParams(params: PaginationParams): PaginationResult 
   const page = Math.max(1, params.page || 1)
   const limit = Math.min(
     DB_CONSTANTS.MAX_PAGE_SIZE,
-    Math.max(1, params.limit || DB_CONSTANTS.DEFAULT_PAGE_SIZE
+    Math.max(1, params.limit || DB_CONSTANTS.DEFAULT_PAGE_SIZE)
+  )
+  
+  return {
+    skip: (page - 1) * limit,
+    take: limit,
+    page,
+    limit,
+  }
+}
+
+export function getPaginationMeta(totalCount: number, params: PaginationResult) {
+  const totalPages = Math.ceil(totalCount / params.limit)
+  
+  return {
+    page: params.page,
+    limit: params.limit,
+    totalCount,
+    totalPages,
+    hasNextPage: params.page < totalPages,
+    hasPreviousPage: params.page > 1,
+  }
+}
+
+// ==================== SEARCH UTILITIES ====================
+
+export function sanitizeSearchQuery(query: string): string {
+  return query
+    .trim()
+    .replace(/[^\w\s-]/g, '') // Remove special characters except hyphens
+    .substring(0, DB_CONSTANTS.MAX_SEARCH_LENGTH)
+}
+
+export function buildSearchConditions(query: string, fields: string[]) {
+  const sanitized = sanitizeSearchQuery(query)
+  if (!sanitized || sanitized.length < DB_CONSTANTS.MIN_SEARCH_LENGTH) {
+    return {}
+  }
+  
+  return {
+    OR: fields.map(field => ({
+      [field]: {
+        contains: sanitized,
+        mode: 'insensitive' as const,
+      },
+    })),
+  }
+}
+
+// ==================== INVENTORY UTILITIES ====================
+
+export function isLowStock(product: { stock: number; reorderLevel: number }): boolean {
+  return product.stock <= product.reorderLevel * DB_CONSTANTS.LOW_STOCK_THRESHOLD
+}
+
+export function isOutOfStock(product: { stock: number }): boolean {
+  return product.stock <= 0
+}
+
+export function calculateStockStatus(product: { stock: number; reorderLevel: number }) {
+  if (isOutOfStock(product)) return 'OUT_OF_STOCK'
+  if (isLowStock(product)) return 'LOW_STOCK'
+  return 'IN_STOCK'
+}
+
+// ==================== AUDIT UTILITIES ====================
+
+export interface AuditLogData {
+  userId?: string
+  action: string
+  entityType?: string
+  entityId?: string
+  oldValues?: any
+  newValues?: any
+  metadata?: any
+  ipAddress?: string
+  userAgent?: string
+}
+
+export function createAuditLog(data: AuditLogData) {
+  return {
+    userId: data.userId,
+    action: data.action,
+    tableName: data.entityType || '',
+    recordId: data.entityId || '',
+    oldValues: data.oldValues ? JSON.parse(JSON.stringify(data.oldValues)) : null,
+    newValues: data.newValues ? JSON.parse(JSON.stringify(data.newValues)) : null,
+    ipAddress: data.ipAddress,
+    userAgent: data.userAgent,
+  }
+}
+
+// ==================== FILE UTILITIES ====================
+
+export function validateFileSize(sizeInBytes: number): boolean {
+  return sizeInBytes <= DB_CONSTANTS.MAX_FILE_SIZE
+}
+
+export function validateFileType(mimeType: string): boolean {
+  return DB_CONSTANTS.ALLOWED_FILE_TYPES.includes(mimeType)
+}
+
+export function generateFileKey(prefix: string, filename: string): string {
+  const timestamp = Date.now()
+  const random = Math.random().toString(36).substring(2, 8)
+  const extension = filename.split('.').pop()
+  return `${prefix}/${timestamp}-${random}.${extension}`
+}
+
+// ==================== EXPORT UTILITIES ====================
+
+export function sanitizeForCsv(value: any): string {
+  if (value === null || value === undefined) return ''
+  
+  const stringValue = String(value)
+  
+  // Escape quotes and wrap in quotes if contains comma, quote, or newline
+  if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+    return `"${stringValue.replace(/"/g, '""')}"`
+  }
+  
+  return stringValue
+}
+
+export function generateCsvFromData(data: any[], headers: string[]): string {
+  const csvHeaders = headers.join(',')
+  const csvRows = data.map(row => 
+    headers.map(header => sanitizeForCsv(row[header])).join(',')
+  )
+  
+  return [csvHeaders, ...csvRows].join('\n')
+}
