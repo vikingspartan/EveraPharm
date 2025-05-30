@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Enums
 enum UserRole {
   ADMIN
   PHARMACIST
@@ -41,6 +42,30 @@ enum ProductType {
   OTHER
 }
 
+enum PurchaseOrderStatus {
+  DRAFT
+  SENT
+  RECEIVED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  INSURANCE
+  BANK_TRANSFER
+}
+
+// Models
 model User {
   id                String           @id @default(cuid())
   email             String           @unique
@@ -61,16 +86,19 @@ model User {
   customerProfile   CustomerProfile?
   pharmacistProfile PharmacistProfile?
   supplierProfile   SupplierProfile?
+  auditLogs         AuditLog[]
 }
 
 model CustomerProfile {
   id                String    @id @default(cuid())
   userId            String    @unique
-  user              User      @relation(fields: [userId], references: [id])
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   insuranceProvider String?
   insuranceNumber   String?
   allergies         String[]
   medicalConditions String[]
+  emergencyContact  String?
+  emergencyPhone    String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 }
@@ -78,7 +106,7 @@ model CustomerProfile {
 model PharmacistProfile {
   id                  String         @id @default(cuid())
   userId              String         @unique
-  user                User           @relation(fields: [userId], references: [id])
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   licenseNumber       String         @unique
   specializations     String[]
   yearsOfExperience   Int
@@ -93,13 +121,14 @@ model PharmacistProfile {
 model SupplierProfile {
   id              String     @id @default(cuid())
   userId          String     @unique
-  user            User       @relation(fields: [userId], references: [id])
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   companyName     String
   taxId           String     @unique
   contactPerson   String
   contactEmail    String
   contactPhone    String
   address         String
+  website         String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
   
@@ -112,12 +141,17 @@ model Category {
   id          String    @id @default(cuid())
   name        String    @unique
   description String?
+  slug        String    @unique
   parentId    String?
   parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
   children    Category[] @relation("CategoryHierarchy")
   products    Product[]
+  isActive    Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  
+  @@index([slug])
+  @@index([parentId])
 }
 
 model Product {
@@ -125,7 +159,7 @@ model Product {
   sku               String      @unique
   name              String
   genericName       String?
-  description       String
+  description       String      @db.Text
   type              ProductType
   manufacturer      String
   supplierId        String?
@@ -144,40 +178,111 @@ model Product {
   packSize          String?     // 30 tablets, 100ml, etc.
   requiresPrescription Boolean @default(false)
   
-  // Storage
+  // Storage & Handling
   storageConditions String?
+  handlingInstructions String?
   
   // Images
   images            String[]
   
+  // SEO
+  metaTitle         String?
+  metaDescription   String?
+  
   isActive          Boolean     @default(true)
+  isFeatured        Boolean     @default(false)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
   
   // Relations
-  inventory         Inventory[]
+  batches           Batch[]
   orderItems        OrderItem[]
   prescriptionItems PrescriptionItem[]
   purchaseOrderItems PurchaseOrderItem[]
+  
+  @@index([sku])
+  @@index([name])
+  @@index([genericName])
+  @@index([categoryId])
+  @@index([supplierId])
 }
 
-model Inventory {
+model Batch {
   id                String    @id @default(cuid())
   productId         String
   product           Product   @relation(fields: [productId], references: [id])
   
+  batchNumber       String    @unique
   quantity          Int
-  reorderLevel      Int
-  reorderQuantity   Int
-  
-  batchNumber       String
+  remainingQuantity Int
   expiryDate        DateTime
+  manufactureDate   DateTime
+  
+  // Tracking
+  lotNumber         String?
   location          String?   // shelf/storage location
   
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
   
+  // Relations
+  inventoryMovements InventoryMovement[]
+  
   @@unique([productId, batchNumber])
+  @@index([expiryDate])
+  @@index([productId])
+}
+
+model Inventory {
+  id                String    @id @default(cuid())
+  productId         String    @unique
+  
+  // Stock levels
+  totalQuantity     Int       @default(0)
+  reservedQuantity  Int       @default(0)
+  availableQuantity Int       @default(0)
+  
+  // Reorder settings
+  reorderLevel      Int
+  reorderQuantity   Int
+  maxStockLevel     Int?
+  
+  lastRestockedAt   DateTime?
+  lastCountedAt     DateTime?
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  movements         InventoryMovement[]
+  
+  @@index([productId])
+}
+
+model InventoryMovement {
+  id                String    @id @default(cuid())
+  inventoryId       String
+  inventory         Inventory @relation(fields: [inventoryId], references: [id])
+  batchId           String?
+  batch             Batch?    @relation(fields: [batchId], references: [id])
+  
+  type              String    // IN, OUT, ADJUSTMENT, RETURN, EXPIRED
+  quantity          Int
+  previousQuantity  Int
+  newQuantity       Int
+  
+  reason            String?
+  referenceType     String?   // ORDER, PRESCRIPTION, PURCHASE_ORDER, ADJUSTMENT
+  referenceId       String?
+  
+  performedBy       String?
+  notes             String?
+  
+  createdAt         DateTime  @default(now())
+  
+  @@index([inventoryId])
+  @@index([batchId])
+  @@index([createdAt])
 }
 
 model Order {
@@ -196,12 +301,18 @@ model Order {
   total             Decimal     @db.Decimal(10, 2)
   
   // Delivery
-  shippingAddress   String
-  billingAddress    String
+  shippingAddress   String      @db.Text
+  billingAddress    String      @db.Text
   
   // Payment
-  paymentMethod     String?
-  paymentStatus     String?
+  paymentMethod     PaymentMethod?
+  paymentStatus     PaymentStatus @default(PENDING)
+  paymentId         String?
+  
+  // Tracking
+  trackingNumber    String?
+  shippedAt         DateTime?
+  deliveredAt       DateTime?
   
   notes             String?
   
@@ -211,12 +322,17 @@ model Order {
   // Relations
   items             OrderItem[]
   prescription      Prescription?
+  
+  @@index([orderNumber])
+  @@index([customerId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model OrderItem {
   id          String   @id @default(cuid())
   orderId     String
-  order       Order    @relation(fields: [orderId], references: [id])
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId   String
   product     Product  @relation(fields: [productId], references: [id])
   
@@ -225,10 +341,14 @@ model OrderItem {
   discount    Decimal  @db.Decimal(10, 2) @default(0)
   total       Decimal  @db.Decimal(10, 2)
   
+  // For tracking which batch was used
+  batchNumber String?
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
   @@unique([orderId, productId])
+  @@index([productId])
 }
 
 model Prescription {
@@ -238,6 +358,7 @@ model Prescription {
   patientId         String
   patient           User               @relation(fields: [patientId], references: [id])
   
+  // Doctor Information
   doctorName        String
   doctorLicense     String
   clinicName        String?
@@ -248,13 +369,14 @@ model Prescription {
   prescribedDate    DateTime
   validUntil        DateTime
   
-  diagnosis         String?
-  notes             String?
+  diagnosis         String?            @db.Text
+  notes             String?            @db.Text
   
   // Verification
   verifiedBy        String?
   verifiedByPharmacist PharmacistProfile? @relation("VerifiedBy", fields: [verifiedBy], references: [id])
   verifiedAt        DateTime?
+  verificationNotes String?
   
   // Dispensing
   dispensedBy       String?
@@ -265,29 +387,40 @@ model Prescription {
   orderId           String?            @unique
   order             Order?             @relation(fields: [orderId], references: [id])
   
+  // Upload
+  documentUrl       String?
+  
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
   
   // Relations
   items             PrescriptionItem[]
+  
+  @@index([prescriptionNumber])
+  @@index([patientId])
+  @@index([status])
+  @@index([prescribedDate])
 }
 
 model PrescriptionItem {
   id                String       @id @default(cuid())
   prescriptionId    String
-  prescription      Prescription @relation(fields: [prescriptionId], references: [id])
+  prescription      Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
   productId         String
   product           Product      @relation(fields: [productId], references: [id])
   
   quantity          Int
   dosage            String       // "1 tablet twice daily"
   duration          String       // "7 days"
-  instructions      String?      // "Take with food"
+  instructions      String?      @db.Text // "Take with food"
+  
+  isSubstitutable   Boolean      @default(false)
   
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   
   @@unique([prescriptionId, productId])
+  @@index([productId])
 }
 
 model PurchaseOrder {
@@ -296,27 +429,40 @@ model PurchaseOrder {
   supplierId      String
   supplier        SupplierProfile     @relation(fields: [supplierId], references: [id])
   
-  status          String              // draft, sent, received, cancelled
+  status          PurchaseOrderStatus @default(DRAFT)
   
   orderDate       DateTime
   expectedDate    DateTime?
   receivedDate    DateTime?
   
+  // Totals
+  subtotal        Decimal             @db.Decimal(10, 2)
+  tax             Decimal             @db.Decimal(10, 2)
+  shippingCost    Decimal             @db.Decimal(10, 2) @default(0)
   totalAmount     Decimal             @db.Decimal(10, 2)
   
-  notes           String?
+  // Payment
+  paymentTerms    String?
+  paymentDueDate  DateTime?
+  paymentStatus   PaymentStatus       @default(PENDING)
+  
+  notes           String?             @db.Text
   
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
   
   // Relations
   items           PurchaseOrderItem[]
+  
+  @@index([orderNumber])
+  @@index([supplierId])
+  @@index([status])
 }
 
 model PurchaseOrderItem {
   id              String         @id @default(cuid())
   purchaseOrderId String
-  purchaseOrder   PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id])
+  purchaseOrder   PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
   productId       String
   product         Product        @relation(fields: [productId], references: [id])
   
@@ -330,13 +476,15 @@ model PurchaseOrderItem {
   updatedAt       DateTime       @updatedAt
   
   @@unique([purchaseOrderId, productId])
+  @@index([productId])
 }
 
 model AuditLog {
   id          String   @id @default(cuid())
   userId      String?
-  action      String
-  entity      String
+  user        User?    @relation(fields: [userId], references: [id])
+  action      String   // CREATE, UPDATE, DELETE, VIEW, LOGIN, LOGOUT
+  entity      String   // User, Product, Order, etc.
   entityId    String
   oldValues   Json?
   newValues   Json?
@@ -346,4 +494,6 @@ model AuditLog {
   
   @@index([userId])
   @@index([entity, entityId])
-} 
+  @@index([action])
+  @@index([createdAt])
+}
