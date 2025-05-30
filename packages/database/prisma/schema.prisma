@@ -1,0 +1,212 @@
+// new Prisma schema
+// Datasource and generator
+// Using PostgreSQL connection via DATABASE_URL env var
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ===================== ENUMS =====================
+
+enum CompanyType {
+  MANUFACTURER
+  DISTRIBUTOR
+  PHARMACY
+  WHOLESALER
+  HOSPITAL
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  SALES
+  SUPPORT
+  WAREHOUSE
+  FINANCE
+  DISTRIBUTOR_ADMIN
+  DISTRIBUTOR_USER
+}
+
+enum DistributorTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum ProductDivision {
+  HUMAN
+  MEDICAL_DEVICE
+  SUPPLEMENT
+  VETERINARY
+  ONCOLOGY
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+  DISCONTINUED
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  BANK_TRANSFER
+  CASH_ON_DELIVERY
+}
+
+// ===================== MODELS =====================
+
+model Company {
+  id           String         @id @default(uuid())
+  name         String
+  slug         String         @unique
+  type         CompanyType
+  tier         DistributorTier @default(BRONZE)
+  email        String?        @unique
+  phone        String?
+  address      String?
+  country      String?
+  users        User[]
+  orders       Order[]
+  quotes       Quote[]
+  products     Product[]      @relation("Manufacturer")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole   @default(DISTRIBUTOR_USER)
+  companyId    String?
+  company      Company?   @relation(fields: [companyId], references: [id])
+  orders       Order[]
+  quotes       Quote[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Category {
+  id        String      @id @default(uuid())
+  name      String
+  slug      String      @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  products  Product[]
+  subcategories Subcategory[]
+}
+
+model Subcategory {
+  id         String     @id @default(uuid())
+  name       String
+  slug       String     @unique
+  categoryId String
+  category   Category   @relation(fields: [categoryId], references: [id])
+  products   Product[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Product {
+  id             String          @id @default(uuid())
+  sku            String          @unique
+  name           String
+  slug           String          @unique
+  description    String?
+  shortDescription String?
+  division       ProductDivision
+  dosageForm     String?
+  strength       String?
+  packSize       String?
+  basePrice      Decimal         @db.Decimal(10,2)
+  currency       String          @default("USD")
+  manufacturerId String?
+  manufacturer   Company?        @relation("Manufacturer", fields: [manufacturerId], references: [id])
+  categoryId     String
+  category       Category        @relation(fields: [categoryId], references: [id])
+  subcategoryId  String?
+  subcategory    Subcategory?    @relation(fields: [subcategoryId], references: [id])
+  status         ProductStatus   @default(DRAFT)
+  stock          Int             @default(0)
+  reorderLevel   Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  orderItems     OrderItem[]
+  quoteItems     QuoteItem[]
+}
+
+model Order {
+  id           String       @id @default(uuid())
+  orderNumber  String       @unique
+  companyId    String
+  company      Company      @relation(fields: [companyId], references: [id])
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+  status       OrderStatus  @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING)
+  paymentMethod PaymentMethod @default(BANK_TRANSFER)
+  totalPrice   Decimal      @db.Decimal(12,2)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  items        OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  unitPrice  Decimal  @db.Decimal(10,2)
+  discount   Decimal  @db.Decimal(10,2) @default(0)
+  totalPrice Decimal  @db.Decimal(12,2)
+}
+
+model Quote {
+  id          String      @id @default(uuid())
+  quoteNumber String      @unique
+  companyId   String
+  company     Company     @relation(fields: [companyId], references: [id])
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  validUntil  DateTime
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  items       QuoteItem[]
+}
+
+model QuoteItem {
+  id         String   @id @default(uuid())
+  quoteId    String
+  quote      Quote    @relation(fields: [quoteId], references: [id])
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+  quantity   Int
+  unitPrice  Decimal  @db.Decimal(10,2)
+  discount   Decimal  @db.Decimal(10,2) @default(0)
+  totalPrice Decimal  @db.Decimal(12,2)
+}

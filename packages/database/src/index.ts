@@ -16,6 +16,6 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 export * from '@prisma/client'
 
 // Export custom types and utilities
-export * from './types'
+export * from './type'
 export * from './utils'
 export * from './constants'

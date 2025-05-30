@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Menu, X, ChevronDown, Globe, Search, User, ShoppingCart } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui/button'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,7 +13,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu'
+} from '@repo/ui/navigation-menu'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +21,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@repo/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 
 const navigation = {

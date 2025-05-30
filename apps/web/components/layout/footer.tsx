@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Twitter, Linkedin, Youtube, Instagram, Mail, Phone, MapPin } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
+import { Button } from '@repo/ui/button'
+import { Input } from '@repo/ui/input'
+import { Separator } from '@repo/ui/separator'
 
 const footerLinks = {
   products: [

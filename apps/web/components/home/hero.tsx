@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronRight, ArrowRight, Shield, Globe, Users, Award } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@repo/ui/button'
 
 const slides = [
   {
