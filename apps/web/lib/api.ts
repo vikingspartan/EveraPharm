@@ -228,6 +228,127 @@ class ApiClient {
       };
     }>>(`/products/search?q=${encodeURIComponent(query)}`);
   }
+
+  // Order methods
+  async createOrder(orderData: {
+    items: Array<{
+      productId: string;
+      quantity: number;
+      unitPrice: number;
+    }>;
+    shippingAddress: string;
+    billingAddress: string;
+    paymentMethod: string;
+    notes?: string;
+  }) {
+    return this.request<{
+      id: string;
+      orderNumber: string;
+      status: string;
+      total: string;
+      items: Array<{
+        id: string;
+        quantity: number;
+        unitPrice: string;
+        total: string;
+        product: {
+          id: string;
+          name: string;
+          requiresPrescription: boolean;
+        };
+      }>;
+    }>('/orders', {
+      method: 'POST',
+      body: JSON.stringify(orderData),
+    });
+  }
+
+  async getOrders() {
+    return this.request<Array<{
+      id: string;
+      orderNumber: string;
+      status: string;
+      total: string;
+      createdAt: string;
+      items: Array<{
+        id: string;
+        quantity: number;
+        product: {
+          id: string;
+          name: string;
+          images: string[];
+        };
+      }>;
+    }>>('/orders');
+  }
+
+  async getOrder(id: string) {
+    return this.request<{
+      id: string;
+      orderNumber: string;
+      status: string;
+      subtotal: string;
+      tax: string;
+      shippingCost: string;
+      total: string;
+      shippingAddress: string;
+      billingAddress: string;
+      paymentMethod: string;
+      paymentStatus: string;
+      createdAt: string;
+      updatedAt: string;
+      shippedAt: string | null;
+      deliveredAt: string | null;
+      items: Array<{
+        id: string;
+        quantity: number;
+        unitPrice: string;
+        total: string;
+        product: {
+          id: string;
+          name: string;
+          genericName: string | null;
+          manufacturer: string;
+          requiresPrescription: boolean;
+          images: string[];
+        };
+      }>;
+      customer: {
+        id: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+      };
+      prescription?: {
+        id: string;
+        status: string;
+        doctorName: string;
+        prescribedDate: string;
+      };
+    }>(`/orders/${id}`);
+  }
+
+  async uploadPrescription(orderId: string, prescriptionData: FormData) {
+    const headers: Record<string, string> = {};
+    
+    // Don't set Content-Type for FormData - browser will set it with boundary
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/orders/${orderId}/prescription`, {
+      method: 'POST',
+      headers,
+      body: prescriptionData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ message: response.statusText }));
+      throw new Error(error.message || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
 }
 
 export const api = new ApiClient(); 

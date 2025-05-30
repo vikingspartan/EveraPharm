@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useCart } from '../../contexts/CartContext';
 
 interface Product {
   id: string;
@@ -27,8 +28,22 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const { addToCart, isInCart } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+  
   const price = parseFloat(product.price);
   const inStock = true; // We'll need to get this from inventory data later
+  const inCart = isInCart(product.id);
+
+  const handleAddToCart = async () => {
+    if (!inStock || product.requiresPrescription || inCart) return;
+    
+    setIsAdding(true);
+    // Add a small delay to show feedback
+    await new Promise(resolve => setTimeout(resolve, 300));
+    addToCart(product, 1);
+    setIsAdding(false);
+  };
 
   return (
     <div className="group relative bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200">
@@ -65,6 +80,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               Out of Stock
             </span>
           )}
+          {inCart && (
+            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              In Cart
+            </span>
+          )}
         </div>
 
         {/* Product Name */}
@@ -95,16 +115,28 @@ export default function ProductCard({ product }: ProductCardProps) {
             <span className="text-2xl font-bold text-gray-900">${price.toFixed(2)}</span>
           </div>
           
-          <button
-            disabled={!inStock || product.requiresPrescription}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              !inStock || product.requiresPrescription
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-            }`}
-          >
-            {!inStock ? 'Out of Stock' : product.requiresPrescription ? 'Prescription Required' : 'Add to Cart'}
-          </button>
+          {inCart ? (
+            <Link
+              href="/cart"
+              className="px-4 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200"
+            >
+              View Cart
+            </Link>
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              disabled={!inStock || product.requiresPrescription || isAdding}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                !inStock || product.requiresPrescription
+                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  : isAdding
+                  ? 'bg-blue-500 text-white cursor-wait'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+              }`}
+            >
+              {!inStock ? 'Out of Stock' : product.requiresPrescription ? 'Prescription Required' : isAdding ? 'Adding...' : 'Add to Cart'}
+            </button>
+          )}
         </div>
       </div>
     </div>

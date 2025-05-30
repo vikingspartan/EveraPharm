@@ -1,39 +1,18 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-
-interface CartItem {
-  id: string;
-  productId: string;
-  name: string;
-  genericName?: string;
-  price: number;
-  quantity: number;
-  image?: string;
-  strength?: string;
-  dosageForm?: string;
-}
+import { useCart } from '../../contexts/CartContext';
 
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  items: CartItem[];
-  onUpdateQuantity: (itemId: string, quantity: number) => void;
-  onRemoveItem: (itemId: string) => void;
 }
 
-export default function CartDrawer({ 
-  isOpen, 
-  onClose, 
-  items, 
-  onUpdateQuantity, 
-  onRemoveItem 
-}: CartDrawerProps) {
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const tax = subtotal * 0.08; // 8% tax
-  const shipping = subtotal > 50 ? 0 : 5.99;
-  const total = subtotal + tax + shipping;
+export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
+  const { items, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const total = getCartTotal();
 
   return (
     <>
@@ -52,7 +31,7 @@ export default function CartDrawer({
         <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
-            <h2 className="text-lg font-semibold">Shopping Cart ({items.length})</h2>
+            <h2 className="text-lg font-semibold">Shopping Cart</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-md"
@@ -97,27 +76,35 @@ export default function CartDrawer({
 
                     {/* Product Info */}
                     <div className="flex-1">
-                      <h4 className="text-sm font-medium">{item.name}</h4>
+                      <h4 className="text-sm font-medium">
+                        <Link href={`/products/${item.productId}`} onClick={onClose} className="hover:text-blue-600">
+                          {item.name}
+                        </Link>
+                      </h4>
                       {item.genericName && (
-                        <p className="text-xs text-gray-500">{item.genericName}</p>
+                        <p className="text-xs text-gray-500 italic">{item.genericName}</p>
                       )}
-                      {(item.strength || item.dosageForm) && (
-                        <p className="text-xs text-gray-600">
-                          {item.strength} {item.dosageForm && `• ${item.dosageForm}`}
-                        </p>
+                      <p className="text-xs text-gray-600">
+                        {item.strength} {item.dosageForm}
+                      </p>
+                      {item.requiresPrescription && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 mt-1">
+                          Rx Required
+                        </span>
                       )}
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => onUpdateQuantity(item.id, Math.max(0, item.quantity - 1))}
+                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                             className="h-6 w-6 rounded-md border hover:bg-gray-100"
                           >
                             -
                           </button>
                           <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
                           <button
-                            onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
-                            className="h-6 w-6 rounded-md border hover:bg-gray-100"
+                            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                            disabled={item.quantity >= item.maxQuantity}
+                            className="h-6 w-6 rounded-md border hover:bg-gray-100 disabled:opacity-50"
                           >
                             +
                           </button>
@@ -128,7 +115,7 @@ export default function CartDrawer({
 
                     {/* Remove Button */}
                     <button
-                      onClick={() => onRemoveItem(item.id)}
+                      onClick={() => removeFromCart(item.productId)}
                       className="text-gray-400 hover:text-red-500"
                     >
                       <svg className="h-5 w-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -141,33 +128,41 @@ export default function CartDrawer({
             )}
           </div>
 
-          {/* Footer with totals */}
-          {items.length > 0 && (
-            <div className="border-t p-4 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>Shipping</span>
-                <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
-              </div>
-              {shipping > 0 && (
-                <p className="text-xs text-gray-500">Free shipping on orders over $50</p>
-              )}
-              <div className="flex justify-between font-semibold text-lg pt-2 border-t">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
-              </div>
-              <button className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition-colors mt-4">
-                Proceed to Checkout
-              </button>
-            </div>
-          )}
+          {/* Footer */}
+          <div className="border-t p-4">
+            {items.length > 0 && (
+              <>
+                <div className="flex justify-between text-base font-medium text-gray-900 mb-2">
+                  <p>Subtotal</p>
+                  <p>${total.toFixed(2)}</p>
+                </div>
+                <p className="text-sm text-gray-500 mb-4">
+                  Shipping and taxes calculated at checkout.
+                </p>
+                {items.some(item => item.requiresPrescription) && (
+                  <div className="mb-4 p-2 bg-yellow-50 border border-yellow-200 rounded-md">
+                    <p className="text-xs text-yellow-800">
+                      Prescription required for some items
+                    </p>
+                  </div>
+                )}
+                <Link
+                  href="/cart"
+                  onClick={onClose}
+                  className="w-full block text-center bg-blue-600 text-white px-4 py-3 rounded-md font-medium hover:bg-blue-700 mb-3"
+                >
+                  View Cart
+                </Link>
+              </>
+            )}
+            <button
+              type="button"
+              className="w-full text-center text-sm text-gray-500 hover:text-gray-700"
+              onClick={onClose}
+            >
+              Continue Shopping →
+            </button>
+          </div>
         </div>
       </div>
     </>

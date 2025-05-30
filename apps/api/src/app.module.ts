@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
-// import { OrdersModule } from './orders/orders.module';
+import { OrdersModule } from './orders/orders.module';
 // import { PrescriptionsModule } from './prescriptions/prescriptions.module';
 // import { InventoryModule } from './inventory/inventory.module';
 // import { CategoriesModule } from './categories/categories.module';
@@ -17,7 +17,7 @@ import { HealthModule } from './health/health.module';
     AuthModule,
     UsersModule,
     ProductsModule,
-    // OrdersModule,
+    OrdersModule,
     // PrescriptionsModule,
     // InventoryModule,
     // CategoriesModule,

@@ -6,15 +6,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { api } from '../../../lib/api';
 import ProductCard from '../../../components/products/ProductCard';
+import { useCart } from '../../../contexts/CartContext';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const { addToCart, isInCart } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [similarProducts, setSimilarProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
     if (params.id) {
@@ -44,9 +47,14 @@ export default function ProductDetailPage() {
     }
   };
 
-  const handleAddToCart = () => {
-    // TODO: Implement add to cart functionality
-    alert(`Added ${quantity} ${product.name} to cart`);
+  const handleAddToCart = async () => {
+    if (!product || !isInStock || product.requiresPrescription || isInCart(product.id)) return;
+    
+    setIsAdding(true);
+    // Add a small delay to show feedback
+    await new Promise(resolve => setTimeout(resolve, 300));
+    addToCart(product, quantity);
+    setIsAdding(false);
   };
 
   if (loading) {
@@ -72,6 +80,7 @@ export default function ProductDetailPage() {
 
   const price = parseFloat(product.price);
   const isInStock = product.inventory && product.inventory.availableQuantity > 0;
+  const inCart = isInCart(product.id);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -199,26 +208,42 @@ export default function ProductDetailPage() {
                 {/* Quantity and Add to Cart */}
                 {isInStock && !product.requiresPrescription && (
                   <div className="flex items-center gap-4">
-                    <div className="flex items-center">
-                      <label htmlFor="quantity" className="mr-2 text-sm font-medium text-gray-700">
-                        Quantity:
-                      </label>
-                      <input
-                        type="number"
-                        id="quantity"
-                        min="1"
-                        max={product.inventory?.availableQuantity || 99}
-                        value={quantity}
-                        onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                        className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                    <button
-                      onClick={handleAddToCart}
-                      className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                    >
-                      Add to Cart
-                    </button>
+                    {!inCart && (
+                      <div className="flex items-center">
+                        <label htmlFor="quantity" className="mr-2 text-sm font-medium text-gray-700">
+                          Quantity:
+                        </label>
+                        <input
+                          type="number"
+                          id="quantity"
+                          min="1"
+                          max={product.inventory?.availableQuantity || 99}
+                          value={quantity}
+                          onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                          className="w-20 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                    )}
+                    {inCart ? (
+                      <Link
+                        href="/cart"
+                        className="flex-1 bg-gray-600 text-white px-6 py-3 rounded-md font-medium hover:bg-gray-700 text-center"
+                      >
+                        View Cart
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={handleAddToCart}
+                        disabled={isAdding}
+                        className={`flex-1 px-6 py-3 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                          isAdding
+                            ? 'bg-blue-500 text-white cursor-wait'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                        }`}
+                      >
+                        {isAdding ? 'Adding to Cart...' : 'Add to Cart'}
+                      </button>
+                    )}
                   </div>
                 )}
 
