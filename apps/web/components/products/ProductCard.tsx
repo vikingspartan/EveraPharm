@@ -4,39 +4,40 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-interface ProductCardProps {
+interface Product {
   id: string;
   name: string;
-  genericName?: string;
+  genericName: string | null;
   manufacturer: string;
-  price: number;
-  image?: string;
+  price: string;
+  images: string[];
   requiresPrescription: boolean;
-  inStock: boolean;
-  dosageForm?: string;
-  strength?: string;
+  dosageForm: string | null;
+  strength: string | null;
+  packSize: string | null;
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  };
 }
 
-export default function ProductCard({
-  id,
-  name,
-  genericName,
-  manufacturer,
-  price,
-  image,
-  requiresPrescription,
-  inStock,
-  dosageForm,
-  strength,
-}: ProductCardProps) {
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  const price = parseFloat(product.price);
+  const inStock = true; // We'll need to get this from inventory data later
+
   return (
     <div className="group relative bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-200">
       {/* Product Image */}
       <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-lg bg-gray-200">
-        {image ? (
+        {product.images && product.images.length > 0 && product.images[0] ? (
           <Image
-            src={image}
-            alt={name}
+            src={product.images[0]}
+            alt={product.name}
             width={300}
             height={300}
             className="h-full w-full object-cover object-center group-hover:opacity-75"
@@ -54,7 +55,7 @@ export default function ProductCard({
       <div className="p-4">
         {/* Badges */}
         <div className="flex gap-2 mb-2">
-          {requiresPrescription && (
+          {product.requiresPrescription && (
             <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
               Rx Required
             </span>
@@ -68,25 +69,25 @@ export default function ProductCard({
 
         {/* Product Name */}
         <h3 className="text-lg font-semibold text-gray-900">
-          <Link href={`/products/${id}`} className="hover:text-blue-600">
-            {name}
+          <Link href={`/products/${product.id}`} className="hover:text-blue-600">
+            {product.name}
           </Link>
         </h3>
 
         {/* Generic Name */}
-        {genericName && (
-          <p className="text-sm text-gray-500 italic">{genericName}</p>
+        {product.genericName && (
+          <p className="text-sm text-gray-500 italic">{product.genericName}</p>
         )}
 
         {/* Dosage Info */}
         <div className="mt-1 text-sm text-gray-600">
-          {strength && <span>{strength}</span>}
-          {strength && dosageForm && <span> • </span>}
-          {dosageForm && <span>{dosageForm}</span>}
+          {product.strength && <span>{product.strength}</span>}
+          {product.strength && product.dosageForm && <span> • </span>}
+          {product.dosageForm && <span>{product.dosageForm}</span>}
         </div>
 
         {/* Manufacturer */}
-        <p className="mt-1 text-sm text-gray-500">by {manufacturer}</p>
+        <p className="mt-1 text-sm text-gray-500">by {product.manufacturer}</p>
 
         {/* Price and Action */}
         <div className="mt-4 flex items-center justify-between">
@@ -95,14 +96,14 @@ export default function ProductCard({
           </div>
           
           <button
-            disabled={!inStock || requiresPrescription}
+            disabled={!inStock || product.requiresPrescription}
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              !inStock || requiresPrescription
+              !inStock || product.requiresPrescription
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 text-white hover:bg-blue-700'
             }`}
           >
-            {!inStock ? 'Out of Stock' : requiresPrescription ? 'Prescription Required' : 'Add to Cart'}
+            {!inStock ? 'Out of Stock' : product.requiresPrescription ? 'Prescription Required' : 'Add to Cart'}
           </button>
         </div>
       </div>

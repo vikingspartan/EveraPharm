@@ -1,18 +1,16 @@
 import { Controller, Get, Patch, Body, Request, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('me')
   async getProfile(@Request() req: any) {
-    // TODO: Use JwtAuthGuard to get user from JWT
-    // For now, return a mock user
-    const userId = req.user?.id || '1';
+    const userId = req.user.id;
     const user = await this.usersService.findById(userId);
     if (!user) {
       return { error: 'User not found' };
@@ -21,11 +19,10 @@ export class UsersController {
     return profile;
   }
 
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch('me')
   async updateProfile(@Request() req: any, @Body() updateUserDto: UpdateUserDto) {
-    // TODO: Use JwtAuthGuard to get user from JWT
-    const userId = req.user?.id || '1';
+    const userId = req.user.id;
     const updatedUser = await this.usersService.update(userId, updateUserDto);
     const { password, ...profile } = updatedUser;
     return profile;
