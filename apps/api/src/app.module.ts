@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
+import { AdminModule } from './admin/admin.module';
 // import { PrescriptionsModule } from './prescriptions/prescriptions.module';
 // import { InventoryModule } from './inventory/inventory.module';
 // import { CategoriesModule } from './categories/categories.module';
@@ -18,6 +19,7 @@ import { HealthModule } from './health/health.module';
     UsersModule,
     ProductsModule,
     OrdersModule,
+    AdminModule,
     // PrescriptionsModule,
     // InventoryModule,
     // CategoriesModule,

@@ -8,25 +8,21 @@ import {
   Delete, 
   Query,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { QueryProductsDto } from './dto/query-products.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AdminGuard } from '../admin/admin.guard';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  async create(@Request() req: any, @Body() createProductDto: CreateProductDto) {
-    // Check if user is admin
-    if (req.user.role !== 'ADMIN') {
-      throw new Error('Unauthorized - Admin access required');
-    }
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  async create(@Body() createProductDto: CreateProductDto) {
     return this.productsService.create(createProductDto);
   }
 
@@ -49,26 +45,17 @@ export class ProductsController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, AdminGuard)
   async update(
-    @Request() req: any,
     @Param('id') id: string, 
     @Body() updateProductDto: UpdateProductDto
   ) {
-    // Check if user is admin
-    if (req.user.role !== 'ADMIN') {
-      throw new Error('Unauthorized - Admin access required');
-    }
     return this.productsService.update(id, updateProductDto);
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  async remove(@Request() req: any, @Param('id') id: string) {
-    // Check if user is admin
-    if (req.user.role !== 'ADMIN') {
-      throw new Error('Unauthorized - Admin access required');
-    }
+  @UseGuards(JwtAuthGuard, AdminGuard)
+  async remove(@Param('id') id: string) {
     return this.productsService.remove(id);
   }
 } 

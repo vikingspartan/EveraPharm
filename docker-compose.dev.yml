@@ -1,0 +1,27 @@
+version: '3.8'
+
+# Development override for local testing of production setup
+services:
+  postgres:
+    ports:
+      - "5433:5432"  # Different port to avoid conflicts with local PostgreSQL
+    environment:
+      POSTGRES_PASSWORD: dev_password
+
+  api:
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://everapharm_user:dev_password@postgres:5432/everapharm_prod
+      JWT_SECRET: dev_jwt_secret_for_testing_only
+      CORS_ORIGIN: http://localhost:3001
+
+  web:
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3000/api
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"  # Different port for local testing 

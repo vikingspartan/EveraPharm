@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3002/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
 
 class ApiClient {
   private token: string | null = null;
@@ -349,6 +349,138 @@ class ApiClient {
 
     return response.json();
   }
+
+  // Admin methods
+  async getAdminStats() {
+    return this.request<{
+      stats: {
+        totalOrders: number;
+        pendingOrders: number;
+        totalProducts: number;
+        activeProducts: number;
+        totalUsers: number;
+        totalRevenue: number;
+        todayOrders: number;
+        todayRevenue: number;
+        lowStockProducts: number;
+      };
+      recentOrders: Array<any>;
+      lowStockAlerts: Array<any>;
+      salesByCategory: Array<{
+        category: string;
+        orderCount: number;
+        revenue: number;
+      }>;
+    }>('/admin/stats');
+  }
+
+  async getAdminOrders(params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    startDate?: string;
+    endDate?: string;
+    search?: string;
+  }) {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          queryParams.append(key, String(value));
+        }
+      });
+    }
+    
+    return this.request<{
+      data: Array<any>;
+      meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    }>(`/admin/orders${queryParams.toString() ? `?${queryParams.toString()}` : ''}`);
+  }
+
+  async updateOrderStatus(orderId: string, status: string) {
+    return this.request<any>(`/admin/orders/${orderId}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({ status }),
+    });
+  }
+
+  async getUsers(params?: {
+    page?: number;
+    limit?: number;
+    role?: string;
+    isActive?: boolean;
+    search?: string;
+  }) {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          queryParams.append(key, String(value));
+        }
+      });
+    }
+    
+    return this.request<{
+      data: Array<{
+        id: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+        role: string;
+        phoneNumber: string | null;
+        isActive: boolean;
+        createdAt: string;
+        _count: {
+          orders: number;
+        };
+      }>;
+      meta: {
+        total: number;
+        page: number;
+        limit: number;
+        totalPages: number;
+      };
+    }>(`/admin/users${queryParams.toString() ? `?${queryParams.toString()}` : ''}`);
+  }
+
+  async updateUser(userId: string, data: { isActive?: boolean; role?: string }) {
+    return this.request<{
+      id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      role: string;
+      isActive: boolean;
+    }>(`/admin/users/${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteProduct(productId: string) {
+    return this.request<void>(`/products/${productId}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async createProduct(productData: any) {
+    return this.request<any>('/products', {
+      method: 'POST',
+      body: JSON.stringify(productData),
+    });
+  }
+
+  async updateProduct(productId: string, productData: any) {
+    return this.request<any>(`/products/${productId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(productData),
+    });
+  }
 }
 
-export const api = new ApiClient(); 
+export const api = new ApiClient();

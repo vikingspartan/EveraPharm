@@ -1,0 +1,90 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Run type checking
+      run: npm run check-types
+
+    - name: Build project
+      run: npm run build:prod
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to DigitalOcean
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_USER }}
+        key: ${{ secrets.DROPLET_SSH_KEY }}
+        script: |
+          cd /opt/everapharm
+          git pull origin main
+          
+          # Load environment variables
+          export $(cat .env.production | grep -v '^#' | xargs)
+          
+          # Build and deploy
+          docker-compose build --no-cache
+          docker-compose down
+          docker-compose up -d postgres
+          sleep 10
+          docker-compose run --rm api npm run migrate:prod
+          docker-compose up -d
+          
+          # Health check
+          sleep 20
+          curl -f http://localhost:3000/api/health || exit 1
+          
+          # Clean up
+          docker image prune -f
+          
+          echo "Deployment completed!"
+
+    - name: Notify Slack (Success)
+      if: success()
+      uses: 8398a7/action-slack@v3
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      with:
+        status: success
+        text: 'EveraPharma deployed successfully to production! 🚀'
+
+    - name: Notify Slack (Failure)
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      with:
+        status: failure
+        text: 'EveraPharma deployment failed! ❌' 
