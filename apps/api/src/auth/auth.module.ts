@@ -3,8 +3,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { JwtStrategy } from './jwt.strategy';
-import { LocalStrategy } from './local.strategy';
+// import { JwtStrategy } from './jwt.strategy';
+// import { LocalStrategy } from './local.strategy';
 import { UsersModule } from '../users/users.module';
 
 @Module({
@@ -16,7 +16,7 @@ import { UsersModule } from '../users/users.module';
       signOptions: { expiresIn: '24h' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService], // LocalStrategy, JwtStrategy removed temporarily
   controllers: [AuthController],
   exports: [AuthService],
 })
