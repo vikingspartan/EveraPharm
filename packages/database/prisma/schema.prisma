@@ -1,0 +1,349 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  PHARMACIST
+  CUSTOMER
+  SUPPLIER
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum PrescriptionStatus {
+  PENDING
+  VERIFIED
+  DISPENSED
+  EXPIRED
+  CANCELLED
+}
+
+enum ProductType {
+  MEDICINE
+  MEDICAL_DEVICE
+  SUPPLEMENT
+  COSMETIC
+  OTHER
+}
+
+model User {
+  id                String           @id @default(cuid())
+  email             String           @unique
+  password          String
+  firstName         String
+  lastName          String
+  role              UserRole         @default(CUSTOMER)
+  phoneNumber       String?
+  dateOfBirth       DateTime?
+  address           String?
+  isActive          Boolean          @default(true)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  
+  // Relations
+  orders            Order[]
+  prescriptions     Prescription[]
+  customerProfile   CustomerProfile?
+  pharmacistProfile PharmacistProfile?
+  supplierProfile   SupplierProfile?
+}
+
+model CustomerProfile {
+  id                String    @id @default(cuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id])
+  insuranceProvider String?
+  insuranceNumber   String?
+  allergies         String[]
+  medicalConditions String[]
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
+model PharmacistProfile {
+  id                  String         @id @default(cuid())
+  userId              String         @unique
+  user                User           @relation(fields: [userId], references: [id])
+  licenseNumber       String         @unique
+  specializations     String[]
+  yearsOfExperience   Int
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  
+  // Relations
+  verifiedPrescriptions Prescription[] @relation("VerifiedBy")
+  dispensedPrescriptions Prescription[] @relation("DispensedBy")
+}
+
+model SupplierProfile {
+  id              String     @id @default(cuid())
+  userId          String     @unique
+  user            User       @relation(fields: [userId], references: [id])
+  companyName     String
+  taxId           String     @unique
+  contactPerson   String
+  contactEmail    String
+  contactPhone    String
+  address         String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  
+  // Relations
+  products        Product[]
+  purchaseOrders  PurchaseOrder[]
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  description String?
+  parentId    String?
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id                String      @id @default(cuid())
+  sku               String      @unique
+  name              String
+  genericName       String?
+  description       String
+  type              ProductType
+  manufacturer      String
+  supplierId        String?
+  supplier          SupplierProfile? @relation(fields: [supplierId], references: [id])
+  categoryId        String
+  category          Category    @relation(fields: [categoryId], references: [id])
+  
+  // Pricing
+  price             Decimal     @db.Decimal(10, 2)
+  costPrice         Decimal     @db.Decimal(10, 2)
+  
+  // Medical Information
+  activeIngredients String[]
+  dosageForm        String?     // tablet, capsule, syrup, etc.
+  strength          String?     // 500mg, 10ml, etc.
+  packSize          String?     // 30 tablets, 100ml, etc.
+  requiresPrescription Boolean @default(false)
+  
+  // Storage
+  storageConditions String?
+  
+  // Images
+  images            String[]
+  
+  isActive          Boolean     @default(true)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  
+  // Relations
+  inventory         Inventory[]
+  orderItems        OrderItem[]
+  prescriptionItems PrescriptionItem[]
+  purchaseOrderItems PurchaseOrderItem[]
+}
+
+model Inventory {
+  id                String    @id @default(cuid())
+  productId         String
+  product           Product   @relation(fields: [productId], references: [id])
+  
+  quantity          Int
+  reorderLevel      Int
+  reorderQuantity   Int
+  
+  batchNumber       String
+  expiryDate        DateTime
+  location          String?   // shelf/storage location
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  @@unique([productId, batchNumber])
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique @default(cuid())
+  customerId        String
+  customer          User        @relation(fields: [customerId], references: [id])
+  
+  status            OrderStatus @default(PENDING)
+  
+  // Totals
+  subtotal          Decimal     @db.Decimal(10, 2)
+  tax               Decimal     @db.Decimal(10, 2)
+  discount          Decimal     @db.Decimal(10, 2) @default(0)
+  shippingCost      Decimal     @db.Decimal(10, 2) @default(0)
+  total             Decimal     @db.Decimal(10, 2)
+  
+  // Delivery
+  shippingAddress   String
+  billingAddress    String
+  
+  // Payment
+  paymentMethod     String?
+  paymentStatus     String?
+  
+  notes             String?
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  
+  // Relations
+  items             OrderItem[]
+  prescription      Prescription?
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  
+  quantity    Int
+  unitPrice   Decimal  @db.Decimal(10, 2)
+  discount    Decimal  @db.Decimal(10, 2) @default(0)
+  total       Decimal  @db.Decimal(10, 2)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([orderId, productId])
+}
+
+model Prescription {
+  id                String             @id @default(cuid())
+  prescriptionNumber String            @unique @default(cuid())
+  
+  patientId         String
+  patient           User               @relation(fields: [patientId], references: [id])
+  
+  doctorName        String
+  doctorLicense     String
+  clinicName        String?
+  clinicContact     String?
+  
+  status            PrescriptionStatus @default(PENDING)
+  
+  prescribedDate    DateTime
+  validUntil        DateTime
+  
+  diagnosis         String?
+  notes             String?
+  
+  // Verification
+  verifiedBy        String?
+  verifiedByPharmacist PharmacistProfile? @relation("VerifiedBy", fields: [verifiedBy], references: [id])
+  verifiedAt        DateTime?
+  
+  // Dispensing
+  dispensedBy       String?
+  dispensedByPharmacist PharmacistProfile? @relation("DispensedBy", fields: [dispensedBy], references: [id])
+  dispensedAt       DateTime?
+  
+  // Order link
+  orderId           String?            @unique
+  order             Order?             @relation(fields: [orderId], references: [id])
+  
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  
+  // Relations
+  items             PrescriptionItem[]
+}
+
+model PrescriptionItem {
+  id                String       @id @default(cuid())
+  prescriptionId    String
+  prescription      Prescription @relation(fields: [prescriptionId], references: [id])
+  productId         String
+  product           Product      @relation(fields: [productId], references: [id])
+  
+  quantity          Int
+  dosage            String       // "1 tablet twice daily"
+  duration          String       // "7 days"
+  instructions      String?      // "Take with food"
+  
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  
+  @@unique([prescriptionId, productId])
+}
+
+model PurchaseOrder {
+  id              String              @id @default(cuid())
+  orderNumber     String              @unique @default(cuid())
+  supplierId      String
+  supplier        SupplierProfile     @relation(fields: [supplierId], references: [id])
+  
+  status          String              // draft, sent, received, cancelled
+  
+  orderDate       DateTime
+  expectedDate    DateTime?
+  receivedDate    DateTime?
+  
+  totalAmount     Decimal             @db.Decimal(10, 2)
+  
+  notes           String?
+  
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  
+  // Relations
+  items           PurchaseOrderItem[]
+}
+
+model PurchaseOrderItem {
+  id              String         @id @default(cuid())
+  purchaseOrderId String
+  purchaseOrder   PurchaseOrder  @relation(fields: [purchaseOrderId], references: [id])
+  productId       String
+  product         Product        @relation(fields: [productId], references: [id])
+  
+  quantity        Int
+  unitCost        Decimal        @db.Decimal(10, 2)
+  total           Decimal        @db.Decimal(10, 2)
+  
+  receivedQuantity Int           @default(0)
+  
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  @@unique([purchaseOrderId, productId])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String
+  entity      String
+  entityId    String
+  oldValues   Json?
+  newValues   Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([entity, entityId])
+} 
