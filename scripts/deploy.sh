@@ -29,15 +29,15 @@ git pull origin main
 
 # Build Docker images
 echo "🔨 Building Docker images..."
-docker-compose build --no-cache
+docker compose build --no-cache
 
 # Stop existing containers
 echo "🛑 Stopping existing containers..."
-docker-compose down
+docker compose down
 
 # Start database first
 echo "🗄️  Starting database..."
-docker-compose up -d postgres
+docker compose up -d postgres
 
 # Wait for database to be ready
 echo "⏳ Waiting for database to be ready..."
@@ -45,15 +45,15 @@ sleep 10
 
 # Generate Prisma client before migrations
 echo "🔧 Generating Prisma client..."
-docker-compose run --rm api sh -c "cd packages/database && npx prisma generate"
+docker compose run --rm api sh -c "cd packages/database && npx prisma generate"
 
 # Run database migrations
 echo "🔄 Running database migrations..."
-docker-compose run --rm api npm run migrate:prod
+docker compose run --rm api npm run migrate:prod
 
 # Start all services
 echo "🚀 Starting all services..."
-docker-compose up -d
+docker compose up -d
 
 # Wait for services to be healthy
 echo "⏳ Waiting for services to be healthy..."
@@ -68,7 +68,7 @@ if [ "$api_health" = "200" ]; then
     echo "✅ API is healthy"
 else
     echo "❌ API health check failed (HTTP $api_health)"
-    docker-compose logs api
+    docker compose logs api
     exit 1
 fi
 
@@ -78,7 +78,7 @@ if [ "$web_health" = "200" ]; then
     echo "✅ Web app is healthy"
 else
     echo "❌ Web app health check failed (HTTP $web_health)"
-    docker-compose logs web
+    docker compose logs web
     exit 1
 fi
 
@@ -88,7 +88,7 @@ if [ "$nginx_health" = "301" ] || [ "$nginx_health" = "200" ]; then
     echo "✅ Nginx is healthy"
 else
     echo "❌ Nginx health check failed (HTTP $nginx_health)"
-    docker-compose logs nginx
+    docker compose logs nginx
     exit 1
 fi
 
@@ -99,11 +99,11 @@ docker image prune -f
 echo "✨ Deployment completed successfully!"
 echo ""
 echo "📊 Service Status:"
-docker-compose ps
+docker compose ps
 
 echo ""
 echo "🔗 Access your services at:"
 echo "   - Web: https://everapharm.com"
 echo "   - API: https://api.everapharm.com"
 echo ""
-echo "📝 View logs with: docker-compose logs -f [service_name]" 
+echo "📝 View logs with: docker compose logs -f [service_name]" 

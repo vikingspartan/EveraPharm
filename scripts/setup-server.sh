@@ -28,12 +28,10 @@ echo "🐳 Installing Docker..."
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 apt-get update
-apt-get install -y docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
-# Install Docker Compose
-echo "🐳 Installing Docker Compose..."
-curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
+# Note: docker-compose-plugin provides 'docker compose' command (v2)
+echo "✅ Docker and Docker Compose v2 installed"
 
 # Configure firewall
 echo "🔒 Configuring firewall..."
@@ -133,9 +131,9 @@ After=docker.service
 Type=oneshot
 RemainAfterExit=yes
 WorkingDirectory=/opt/everapharm
-ExecStart=/usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-ExecStop=/usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
-ExecReload=/usr/local/bin/docker-compose -f docker-compose.yml -f docker-compose.prod.yml restart
+ExecStart=/usr/bin/docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+ExecStop=/usr/bin/docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+ExecReload=/usr/bin/docker compose -f docker-compose.yml -f docker-compose.prod.yml restart
 
 [Install]
 WantedBy=multi-user.target
@@ -154,7 +152,7 @@ TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 mkdir -p $BACKUP_DIR
 
 # Backup database
-docker-compose exec -T postgres pg_dump -U everapharm_user everapharm_prod | gzip > "$BACKUP_DIR/db_backup_$TIMESTAMP.sql.gz"
+docker compose exec -T postgres pg_dump -U everapharm_user everapharm_prod | gzip > "$BACKUP_DIR/db_backup_$TIMESTAMP.sql.gz"
 
 # Keep only last 7 days of backups
 find $BACKUP_DIR -name "db_backup_*.sql.gz" -mtime +7 -delete
@@ -174,7 +172,7 @@ cat > /opt/everapharm/setup-ssl.sh << 'EOF'
 echo "Setting up SSL certificates with Let's Encrypt..."
 
 # Stop nginx to free up port 80
-docker-compose stop nginx
+docker compose stop nginx
 
 # Get certificates
 certbot certonly --standalone \
@@ -190,7 +188,7 @@ sed -i 's|ssl_certificate /etc/nginx/certs/self-signed.crt;|ssl_certificate /etc
 sed -i 's|ssl_certificate_key /etc/nginx/certs/self-signed.key;|ssl_certificate_key /etc/letsencrypt/live/everapharm.com/privkey.pem;|g' nginx/nginx.conf
 
 # Start nginx
-docker-compose start nginx
+docker compose start nginx
 
 # Setup auto-renewal
 echo "0 12 * * * /usr/bin/certbot renew --quiet" | crontab -
@@ -207,7 +205,7 @@ echo ""
 echo "📋 Next steps:"
 echo "1. Clone your repository to /opt/everapharm"
 echo "2. Copy .env.production.template to .env.production and fill in values"
-echo "3. Run: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
+echo "3. Run: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d"
 echo "4. After DNS is configured, run: ./setup-ssl.sh"
 echo ""
 echo "🔐 Security reminders:"
