@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { PaymentMethod } from '@prisma/client';
+import { PaymentMethod } from '../../lib/types';
 
 interface PaymentFormProps {
   onSubmit: (paymentMethod: PaymentMethod, paymentDetails?: any) => void;

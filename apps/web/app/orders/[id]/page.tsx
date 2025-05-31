@@ -6,7 +6,7 @@ import { api } from '../../../lib/api';
 import { useAuth } from '../../../hooks/useAuth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { OrderStatus, PaymentStatus } from '@prisma/client';
+import { OrderStatus, PaymentStatus } from '../../../lib/types';
 
 interface OrderDetail {
   id: string;
@@ -123,10 +123,12 @@ export default function OrderDetailPage() {
     switch (status) {
       case 'PENDING':
         return 'text-yellow-600';
-      case 'COMPLETED':
+      case 'PAID':
         return 'text-green-600';
       case 'FAILED':
         return 'text-red-600';
+      case 'REFUNDED':
+        return 'text-gray-600';
       default:
         return 'text-gray-600';
     }

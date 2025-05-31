@@ -24,7 +24,6 @@ ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 # Build the application
-WORKDIR /app
 RUN npm run build --workspace=apps/web
 
 # Production stage
@@ -38,7 +37,8 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
-# Copy built application
+# Copy standalone build
+# Next.js standalone build doesn't include all files we need, so we copy them separately
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
@@ -49,6 +49,7 @@ EXPOSE 3000
 
 ENV PORT 3000
 ENV NODE_ENV production
+ENV HOSTNAME "0.0.0.0"
 
 # Start the application
 CMD ["node", "apps/web/server.js"] 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '../../../lib/api';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '../../../lib/types';
 
 interface Order {
   id: string;

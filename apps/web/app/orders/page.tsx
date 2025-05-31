@@ -6,7 +6,7 @@ import { api } from '../../lib/api';
 import { useAuth } from '../../hooks/useAuth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus } from '../../lib/types';
 
 interface OrderItem {
   id: string;

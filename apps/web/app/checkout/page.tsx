@@ -10,7 +10,7 @@ import PrescriptionUpload from '../../components/checkout/PrescriptionUpload';
 import PaymentForm from '../../components/checkout/PaymentForm';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PaymentMethod } from '@prisma/client';
+import { PaymentMethod } from '../../lib/types';
 
 type CheckoutStep = 'address' | 'prescription' | 'payment' | 'confirmation';
 
