@@ -11,6 +11,9 @@ COPY packages/database/package*.json ./packages/database/
 COPY packages/typescript-config/package*.json ./packages/typescript-config/
 COPY packages/eslint-config/package*.json ./packages/eslint-config/
 
+# Copy prisma schema before installing
+COPY packages/database/prisma ./packages/database/prisma
+
 # Install dependencies
 RUN npm ci
 
@@ -19,11 +22,9 @@ COPY apps/api ./apps/api
 COPY packages ./packages
 
 # Generate Prisma client
-WORKDIR /app/packages/database
-RUN npx prisma generate
+RUN cd packages/database && npx prisma generate
 
 # Build the application
-WORKDIR /app
 RUN npm run build --workspace=apps/api
 
 # Production stage
@@ -39,17 +40,25 @@ COPY turbo.json ./
 COPY apps/api/package*.json ./apps/api/
 COPY packages/database/package*.json ./packages/database/
 
+# Copy prisma schema
+COPY packages/database/prisma ./packages/database/prisma
+
 # Install production dependencies only
 RUN npm ci --only=production
 
-# Copy built application and Prisma client
+# Generate Prisma client in production stage
+RUN cd packages/database && npx prisma generate
+
+# Copy built application
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
-COPY --from=builder /app/packages/database/node_modules/.prisma ./packages/database/node_modules/.prisma
-COPY --from=builder /app/packages/database/prisma ./packages/database/prisma
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nestjs -u 1001
+
+# Change ownership of the app directory
+RUN chown -R nestjs:nodejs /app
+
 USER nestjs
 
 EXPOSE 3000

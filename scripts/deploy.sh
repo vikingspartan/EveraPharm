@@ -43,6 +43,10 @@ docker-compose up -d postgres
 echo "⏳ Waiting for database to be ready..."
 sleep 10
 
+# Generate Prisma client before migrations
+echo "🔧 Generating Prisma client..."
+docker-compose run --rm api sh -c "cd packages/database && npx prisma generate"
+
 # Run database migrations
 echo "🔄 Running database migrations..."
 docker-compose run --rm api npm run migrate:prod
