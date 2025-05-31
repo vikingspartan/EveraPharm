@@ -61,6 +61,18 @@ export default function Header() {
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                       <div className="py-1">
+                        {user.role === 'ADMIN' && (
+                          <>
+                            <Link
+                              href="/admin"
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium"
+                              onClick={() => setShowUserMenu(false)}
+                            >
+                              Admin Dashboard
+                            </Link>
+                            <hr className="my-1" />
+                          </>
+                        )}
                         <Link
                           href="/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
