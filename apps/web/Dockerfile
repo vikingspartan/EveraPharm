@@ -52,4 +52,4 @@ ENV NODE_ENV production
 ENV HOSTNAME "0.0.0.0"
 
 # Start the application
-CMD ["node", "apps/web/server.js"] 
+CMD ["node", "server.js"] 
