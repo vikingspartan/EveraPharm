@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
   compress: true,
   // Optimize for production
   reactStrictMode: true,
-  swcMinify: true,
 };
 
 export default nextConfig;

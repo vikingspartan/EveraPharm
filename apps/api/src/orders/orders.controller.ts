@@ -16,7 +16,7 @@ import { OrdersService } from './orders.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { OrderStatus } from '@prisma/client';
-import { Express } from 'express';
+import type { Express } from 'express';
 
 @Controller('orders')
 export class OrdersController {

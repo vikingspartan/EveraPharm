@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 import HeroSection from '../components/home/HeroSection';
 import ProductCard from '../components/products/ProductCard';
-import CartDrawer from '../components/cart/CartDrawer';
+// import CartDrawer from '../components/cart/CartDrawer';
 
 // Sample featured products data
 const FEATURED_PRODUCTS = [
@@ -12,80 +12,104 @@ const FEATURED_PRODUCTS = [
     name: 'Aspirin 325mg',
     genericName: 'Acetylsalicylic Acid',
     manufacturer: 'PharmaCorp',
-    price: 12.99,
+    price: '12.99',
+    images: [],
     requiresPrescription: false,
-    inStock: true,
     dosageForm: 'Tablet',
     strength: '325mg',
+    packSize: '100 tablets',
+    category: {
+      id: 'cat1',
+      name: 'Pain Relief',
+      slug: 'pain-relief'
+    }
   },
   {
     id: '2',
     name: 'Amoxicillin 500mg',
     genericName: 'Amoxicillin',
     manufacturer: 'MediLabs',
-    price: 24.99,
+    price: '24.99',
+    images: [],
     requiresPrescription: true,
-    inStock: true,
     dosageForm: 'Capsule',
     strength: '500mg',
+    packSize: '30 capsules',
+    category: {
+      id: 'cat2',
+      name: 'Antibiotics',
+      slug: 'antibiotics'
+    }
   },
   {
     id: '3',
     name: 'Vitamin D3 1000IU',
     genericName: 'Cholecalciferol',
     manufacturer: 'HealthPlus',
-    price: 15.99,
+    price: '15.99',
+    images: [],
     requiresPrescription: false,
-    inStock: true,
     dosageForm: 'Softgel',
     strength: '1000IU',
+    packSize: '90 softgels',
+    category: {
+      id: 'cat3',
+      name: 'Vitamins & Supplements',
+      slug: 'vitamins-supplements'
+    }
   },
   {
     id: '4',
     name: 'Insulin Glargine',
     genericName: 'Insulin Glargine',
     manufacturer: 'DiabetesCare',
-    price: 89.99,
+    price: '89.99',
+    images: [],
     requiresPrescription: true,
-    inStock: false,
     dosageForm: 'Injection',
     strength: '100 units/mL',
+    packSize: '10mL vial',
+    category: {
+      id: 'cat4',
+      name: 'Diabetes Care',
+      slug: 'diabetes-care'
+    }
   },
 ];
 
 // Sample cart items
-const SAMPLE_CART_ITEMS = [
-  {
-    id: 'cart-1',
-    productId: '1',
-    name: 'Aspirin 325mg',
-    genericName: 'Acetylsalicylic Acid',
-    price: 12.99,
-    quantity: 2,
-    strength: '325mg',
-    dosageForm: 'Tablet',
-  },
-];
+// const SAMPLE_CART_ITEMS = [
+//   {
+//     id: 'cart-1',
+//     productId: '1',
+//     name: 'Aspirin 325mg',
+//     genericName: 'Acetylsalicylic Acid',
+//     price: '12.99',
+//     quantity: 2,
+//     strength: '325mg',
+//     dosageForm: 'Tablet',
+//   },
+// ];
 
 export default function Page() {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState(SAMPLE_CART_ITEMS);
+  // const [isCartOpen, setIsCartOpen] = useState(false);
+  // const [cartItems, setCartItems] = useState(SAMPLE_CART_ITEMS);
 
-  const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
-    if (newQuantity === 0) {
-      handleRemoveItem(itemId);
-      return;
-    }
-    setCartItems(items =>
-      items.map(item =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+  // const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
+  //   if (newQuantity === 0) {
+  //     handleRemoveItem(itemId);
+  //     return;
+  //   }
+  //   setCartItems(items =>
+  //     items.map(item =>
+  //       item.id === itemId ? { ...item, quantity: newQuantity } : item
+  //     )
+  //   );
+  // };
 
-  const handleRemoveItem = (itemId: string) => {
-    setCartItems(items => items.filter(item => item.id !== itemId));
-  };
+  // const handleRemoveItem = (itemId: string) => {
+  //   setCartItems(items => items.filter(item => item.id !== itemId));
+  // };
 
   return (
     <>
@@ -106,7 +130,7 @@ export default function Page() {
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURED_PRODUCTS.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
@@ -203,16 +227,16 @@ export default function Page() {
       </section>
 
       {/* Cart Drawer */}
-      <CartDrawer
+      {/* <CartDrawer
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         items={cartItems}
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
-      />
+      /> */}
 
       {/* Floating Cart Button - for demo purposes */}
-      <button
+      {/* <button
         onClick={() => setIsCartOpen(true)}
         className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-30"
       >
@@ -224,7 +248,7 @@ export default function Page() {
             {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
           </span>
         )}
-      </button>
+      </button> */}
     </>
   );
 }
