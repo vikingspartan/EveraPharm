@@ -1,8 +1,11 @@
 # Simple Dockerfile for NestJS API
 
-FROM node:18-alpine
+FROM node:18-slim
 
-RUN apk add --no-cache curl
+# Install OpenSSL and curl
+RUN apt-get update -y && \
+    apt-get install -y openssl curl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

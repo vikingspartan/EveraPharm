@@ -1,11 +1,10 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:18-slim AS builder
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY turbo.json ./
 COPY apps/web/package*.json ./apps/web/
 COPY packages/ui/package*.json ./packages/ui/
 COPY packages/tailwind-config/package*.json ./packages/tailwind-config/
@@ -15,41 +14,35 @@ COPY packages/eslint-config/package*.json ./packages/eslint-config/
 # Install dependencies
 RUN npm ci
 
-# Copy source files
-COPY apps/web ./apps/web
-COPY packages ./packages
-
-# Set build-time environment variable
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# Copy source code
+COPY . .
 
 # Build the application
 RUN npm run build --workspace=apps/web
 
 # Production stage
-FROM node:18-alpine AS production
-
-RUN apk add --no-cache libc6-compat
+FROM node:18-slim
 
 WORKDIR /app
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# Copy package files
+COPY package*.json ./
+COPY apps/web/package*.json ./apps/web/
 
-# Copy standalone build
-# Next.js standalone build doesn't include all files we need, so we copy them separately
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+# Install production dependencies
+RUN npm ci --omit=dev --workspace=apps/web
 
-USER nextjs
+# Copy built application
+COPY --from=builder /app/apps/web/.next/standalone ./
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
 
+# Expose port
 EXPOSE 3000
 
-ENV PORT 3000
-ENV NODE_ENV production
-ENV HOSTNAME "0.0.0.0"
+# Set environment
+ENV NODE_ENV=production
+ENV PORT=3000
 
 # Start the application
-CMD ["node", "server.js"] 
+CMD ["node", "apps/web/server.js"] 

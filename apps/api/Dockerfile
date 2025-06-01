@@ -1,67 +1,65 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:18-slim AS builder
+
+# Install OpenSSL and other dependencies
+RUN apt-get update -y && \
+    apt-get install -y openssl curl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY turbo.json ./
 COPY apps/api/package*.json ./apps/api/
 COPY packages/database/package*.json ./packages/database/
 COPY packages/typescript-config/package*.json ./packages/typescript-config/
 COPY packages/eslint-config/package*.json ./packages/eslint-config/
 
-# Copy prisma schema before installing
-COPY packages/database/prisma ./packages/database/prisma
-
 # Install dependencies
 RUN npm ci
 
-# Copy source files
-COPY apps/api ./apps/api
-COPY packages ./packages
+# Copy source code
+COPY . .
 
-# Generate Prisma client
+# Generate Prisma Client
 RUN cd packages/database && npx prisma generate
 
 # Build the application
 RUN npm run build --workspace=apps/api
 
 # Production stage
-FROM node:18-alpine AS production
+FROM node:18-slim
 
-RUN apk add --no-cache curl
+# Install OpenSSL and curl for health checks
+RUN apt-get update -y && \
+    apt-get install -y openssl curl && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY turbo.json ./
 COPY apps/api/package*.json ./apps/api/
 COPY packages/database/package*.json ./packages/database/
 
-# Copy prisma schema
-COPY packages/database/prisma ./packages/database/prisma
-
 # Install production dependencies only
-RUN npm ci --only=production
-
-# Generate Prisma client in production stage
-RUN cd packages/database && npx prisma generate
+RUN npm ci --omit=dev
 
 # Copy built application
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/packages ./packages
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nestjs -u 1001
+# Copy Prisma schema for migrations
+COPY packages/database/prisma ./packages/database/prisma
 
-# Change ownership of the app directory
-RUN chown -R nestjs:nodejs /app
+# Generate Prisma Client in production stage
+RUN cd packages/database && npx prisma generate
 
-USER nestjs
-
+# Expose port
 EXPOSE 3000
+
+# Set environment
+ENV NODE_ENV=production
 
 # Start the application
 CMD ["node", "apps/api/dist/main.js"] 
