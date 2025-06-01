@@ -1,0 +1,29 @@
+# Simple Dockerfile for NestJS API
+
+FROM node:18-alpine
+
+RUN apk add --no-cache curl
+
+WORKDIR /app
+
+# Copy entire monorepo
+COPY . .
+
+# Install all dependencies
+RUN npm ci
+
+# Generate Prisma Client
+RUN cd packages/database && npx prisma generate
+
+# Build the API
+RUN npm run build --workspace=apps/api
+
+# Expose port
+EXPOSE 3000
+
+# Set environment
+ENV NODE_ENV=production
+ENV PORT=3000
+
+# Run the API
+CMD ["npm", "run", "start:prod", "--workspace=apps/api"] 
