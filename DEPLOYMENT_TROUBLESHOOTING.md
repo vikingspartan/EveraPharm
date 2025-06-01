@@ -2,6 +2,31 @@
 
 ## Quick Fixes for Common Issues
 
+### Issue: Prisma OpenSSL errors during migration
+
+**Symptoms:**
+```
+prisma:warn Prisma failed to detect the libssl/openssl version to use
+Error: Could not parse schema engine response: SyntaxError: Unexpected token E in JSON at position 0
+```
+
+**Solution: Use the OpenSSL fix script**
+```bash
+# Run the fix script
+chmod +x scripts/fix-openssl-build.sh
+./scripts/fix-openssl-build.sh
+```
+
+**Manual fix if script doesn't work:**
+1. The issue is caused by Alpine Linux missing OpenSSL libraries that Prisma needs
+2. The Dockerfiles have been updated to use `node:18-slim` instead of `node:18-alpine`
+3. Rebuild the images:
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
+   docker rmi everapharm-api everapharm-web
+   docker-compose -f docker-compose.yml -f docker-compose.prod.yml build --no-cache
+   ```
+
 ### Issue: Web container fails with "server.js not found"
 
 **Option 1: Use production override**
