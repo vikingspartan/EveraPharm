@@ -12,11 +12,11 @@ services:
       retries: 5
 
   web:
-    command: sh -c "cd apps/web && npm run start"
+    command: sh -c "cd apps/web && npx next start -p 3000"
     restart: unless-stopped
     environment:
-      NODE_ENV: production
-      PORT: 3000
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
   api:
     command: sh -c "cd apps/api && npm run start:prod"
