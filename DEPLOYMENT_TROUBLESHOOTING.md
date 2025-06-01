@@ -14,8 +14,8 @@ chmod +x scripts/deploy-simple.sh
 **Option 2: Check container contents**
 ```bash
 # See what's in the container
-docker compose run --rm web ls -la /app/
-docker compose run --rm web ls -la /app/apps/web/
+docker-compose run --rm web ls -la /app/
+docker-compose run --rm web ls -la /app/apps/web/
 ```
 
 **Option 3: Use simple Dockerfile**
@@ -29,7 +29,7 @@ docker compose run --rm web ls -la /app/apps/web/
 
 **Option 1: Generate Prisma client manually**
 ```bash
-docker compose run --rm api sh -c "cd packages/database && npx prisma generate"
+docker-compose run --rm api sh -c "cd packages/database && npx prisma generate"
 ```
 
 **Option 2: Use simple API Dockerfile**
@@ -46,7 +46,7 @@ docker compose run --rm api sh -c "cd packages/database && npx prisma generate"
 sudo apt-get update
 sudo apt-get install -y docker-compose-plugin
 
-# Now use 'docker compose' instead of 'docker-compose'
+# After installing v2, you can use 'docker compose' (with space) instead of 'docker-compose'
 docker compose version
 ```
 
@@ -69,7 +69,7 @@ CORS_ORIGIN=http://everapharm.com,http://www.everapharm.com
 ### 1. Clean Everything
 ```bash
 # Stop all containers
-docker compose down -v
+docker-compose down -v
 
 # Remove all images and volumes
 docker system prune -a --volumes
@@ -94,10 +94,10 @@ chmod +x scripts/*.sh
 ### 3. Test Without Nginx First
 ```bash
 # Start just the core services
-docker compose up -d postgres
+docker-compose up -d postgres
 sleep 10
-docker compose up -d api
-docker compose up -d web
+docker-compose up -d api
+docker-compose up -d web
 
 # Test directly
 curl http://localhost:3000/api/health
@@ -106,56 +106,56 @@ curl http://localhost:3001
 
 ### 4. Add Nginx Once Core Works
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d nginx
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d nginx
 ```
 
 ## Debugging Commands
 
 ### Check Container Status
 ```bash
-docker compose ps
+docker-compose ps
 docker ps -a
 ```
 
 ### View Logs
 ```bash
 # All logs
-docker compose logs
+docker-compose logs
 
 # Specific service
-docker compose logs api
-docker compose logs web
-docker compose logs postgres
-docker compose logs nginx
+docker-compose logs api
+docker-compose logs web
+docker-compose logs postgres
+docker-compose logs nginx
 
 # Follow logs
-docker compose logs -f api
+docker-compose logs -f api
 ```
 
 ### Enter Container for Debugging
 ```bash
 # Enter running container
-docker compose exec api sh
-docker compose exec web sh
+docker-compose exec api sh
+docker-compose exec web sh
 
 # Run command in new container
-docker compose run --rm api ls -la
-docker compose run --rm web npm list
+docker-compose run --rm api ls -la
+docker-compose run --rm web npm list
 ```
 
 ### Check Network Connectivity
 ```bash
 # From web container, ping API
-docker compose exec web ping api
+docker-compose exec web ping api
 
 # From API container, ping database
-docker compose exec api ping postgres
+docker-compose exec api ping postgres
 ```
 
 ### Check Resource Usage
 ```bash
 docker stats
-docker compose top
+docker-compose top
 ```
 
 ## Alternative Deployment Methods
@@ -240,12 +240,12 @@ sudo netstat -tlnp | grep :3001
 ### Database Connection Issues
 ```bash
 # Test database connection
-docker compose exec postgres psql -U everapharm_user everapharm_prod
+docker-compose exec postgres psql -U everapharm_user everapharm_prod
 
 # Reset database
-docker compose down -v
-docker compose up -d postgres
-docker compose run --rm api npm run migrate:prod
+docker-compose down -v
+docker-compose up -d postgres
+docker-compose run --rm api npm run migrate:prod
 ```
 
 ### Out of Disk Space

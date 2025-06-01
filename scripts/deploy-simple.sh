@@ -25,15 +25,15 @@ export $(cat .env.production | grep -v '^#' | xargs)
 
 # Stop any existing containers
 echo "🛑 Stopping existing containers..."
-docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 
 # Pull latest images if needed
 echo "📥 Pulling images..."
-docker compose -f docker-compose.yml -f docker-compose.prod.yml pull
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull
 
 # Start database first
 echo "🗄️ Starting database..."
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d postgres
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d postgres
 
 # Wait for database
 echo "⏳ Waiting for database..."
@@ -41,11 +41,11 @@ sleep 15
 
 # Run Prisma migrations
 echo "🔄 Running database setup..."
-docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm api sh -c "cd packages/database && npx prisma generate && cd /app && npm run migrate:prod"
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml run --rm api sh -c "cd packages/database && npx prisma generate && cd /app && npm run migrate:prod"
 
 # Start all services
 echo "🚀 Starting all services..."
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
 
 # Wait for services to start
 echo "⏳ Waiting for services to start..."
@@ -54,13 +54,13 @@ sleep 20
 # Check status
 echo ""
 echo "📊 Service Status:"
-docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
 
 echo ""
 echo "📝 Check logs:"
-echo "   docker compose -f docker-compose.yml -f docker-compose.prod.yml logs api"
-echo "   docker compose -f docker-compose.yml -f docker-compose.prod.yml logs web"
-echo "   docker compose -f docker-compose.yml -f docker-compose.prod.yml logs nginx"
+echo "   docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs api"
+echo "   docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs web"
+echo "   docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs nginx"
 
 echo ""
 echo "🔍 Test your deployment:"

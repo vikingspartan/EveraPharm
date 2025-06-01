@@ -5,7 +5,7 @@ This guide will get EveraPharma running on your server in under 10 minutes.
 ## Prerequisites
 
 - Ubuntu 22.04 server with at least 2GB RAM
-- Docker and Docker Compose v2 installed
+- Docker and Docker Compose installed (v1 or v2)
 - Domain pointed to your server IP
 
 ## Step 1: Get the Code
@@ -49,7 +49,7 @@ chmod +x scripts/*.sh
 
 ```bash
 # Check all services are running
-docker compose -f docker-compose.yml -f docker-compose.prod.yml ps
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
 
 # Test the API
 curl http://your-server-ip:3000/api/health
@@ -71,7 +71,7 @@ Open in your browser:
 
 ```bash
 # Create admin user and sample data
-docker compose -f docker-compose.yml -f docker-compose.prod.yml run --rm api npm run seed:prod
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml run --rm api npm run seed:prod
 ```
 
 Default admin credentials:
@@ -83,20 +83,20 @@ Default admin credentials:
 ### If services don't start:
 ```bash
 # Check logs
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs
 
 # Try starting services one by one
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d postgres
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d api
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d web
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d nginx
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d postgres
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d api
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d web
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d nginx
 ```
 
 ### If you get build errors:
 ```bash
 # Use the simple Dockerfiles
 sed -i 's/Dockerfile/Dockerfile.simple/g' docker-compose.yml
-docker compose build --no-cache
+docker-compose build --no-cache
 ```
 
 ## Next Steps
@@ -123,13 +123,13 @@ Once everything is working:
 
 ```bash
 # View logs
-docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml logs -f
 
 # Restart a service
-docker compose -f docker-compose.yml -f docker-compose.prod.yml restart api
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml restart api
 
 # Stop everything
-docker compose -f docker-compose.yml -f docker-compose.prod.yml down
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml down
 
 # Update and redeploy
 git pull
