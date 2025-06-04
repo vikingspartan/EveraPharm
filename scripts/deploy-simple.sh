@@ -6,6 +6,13 @@ set -e
 
 echo "🚀 Starting simplified EveraPharma deployment..."
 
+# Ensure we're in the project directory
+if [ ! -f "docker-compose.yml" ]; then
+    echo "❌ Not in project directory!"
+    echo "Please run this script from the everapharm project root"
+    exit 1
+fi
+
 # Check for .env.production
 if [ ! -f .env.production ]; then
     echo "❌ .env.production not found!"

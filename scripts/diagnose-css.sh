@@ -7,7 +7,16 @@ echo ""
 
 # Check if we're in the right directory
 if [ ! -f "docker-compose.yml" ]; then
-    cd /opt/everapharm 2>/dev/null || { echo "❌ Not in project directory"; exit 1; }
+    # Try common locations
+    if [ -d "$HOME/everapharm" ] && [ -f "$HOME/everapharm/docker-compose.yml" ]; then
+        cd "$HOME/everapharm"
+    elif [ -d "/opt/everapharm" ] && [ -f "/opt/everapharm/docker-compose.yml" ]; then
+        cd "/opt/everapharm"
+    else
+        echo "❌ Not in project directory and couldn't find it"
+        echo "Please run this script from the everapharm project root"
+        exit 1
+    fi
 fi
 
 echo "📁 Checking web container's file structure..."

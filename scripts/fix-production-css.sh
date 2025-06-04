@@ -6,8 +6,21 @@ set -e
 
 echo "🔧 Fixing CSS issues in production..."
 
-# Navigate to project root
-cd /opt/everapharm
+# Use current directory or navigate to project root
+if [ -f "docker-compose.yml" ]; then
+    echo "✅ Already in project directory"
+else
+    # Try common locations
+    if [ -d "$HOME/everapharm" ]; then
+        cd "$HOME/everapharm"
+    elif [ -d "/opt/everapharm" ]; then
+        cd "/opt/everapharm"
+    else
+        echo "❌ Could not find everapharm project directory"
+        echo "Please run this script from the project root directory"
+        exit 1
+    fi
+fi
 
 # Pull latest changes if not already done
 echo "📥 Ensuring latest code..."
