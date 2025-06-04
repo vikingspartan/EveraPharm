@@ -17,6 +17,9 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Build the UI package first to ensure styles are generated
+RUN npm run build --workspace=@repo/ui
+
 # Build the application
 RUN npm run build --workspace=apps/web
 
@@ -34,8 +37,8 @@ RUN npm ci --omit=dev --workspace=apps/web
 
 # Copy built application
 COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
 
 # Expose port
 EXPOSE 3000
