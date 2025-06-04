@@ -37,8 +37,8 @@ RUN npm ci --omit=dev --workspace=apps/web
 
 # Copy built application
 COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./.next/static
-COPY --from=builder /app/apps/web/public ./public
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
 
 # Expose port
 EXPOSE 3000
