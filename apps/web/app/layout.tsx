@@ -3,15 +3,13 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { AuthProvider } from "../hooks/useAuth";
-import { CartProvider } from "../contexts/CartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EveraPharma - Your Trusted Online Pharmacy",
-  description: "Get your medications and healthcare products delivered right to your door. Licensed pharmacists available 24/7 for consultations.",
-  keywords: "online pharmacy, medications, prescriptions, healthcare, pharmaceutical",
+  title: "AdvaCare Pharma - Leading Global Pharmaceutical Manufacturer",
+  description: "We manufacture and distribute more than 4,000 medical products globally. Join our network of distributors, hospitals, pharmacies and institutions.",
+  keywords: "pharmaceutical manufacturer, medical devices, supplements, veterinary products, global distributor, healthcare manufacturing",
 };
 
 export default function RootLayout({
@@ -22,13 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-          </CartProvider>
-        </AuthProvider>
+        <Header />
+        <main className="flex-grow">{children}</main>
+        <Footer />
       </body>
     </html>
   );

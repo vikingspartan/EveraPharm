@@ -1,125 +1,158 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { useAuth } from '../../hooks/useAuth';
-import { useCart } from '../../contexts/CartContext';
-import CartDrawer from '../cart/CartDrawer';
+import Link from "next/link";
+import { useState } from "react";
 
 export default function Header() {
-  const { user, isAuthenticated, logout } = useAuth();
-  const { getCartCount } = useCart();
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [showCartDrawer, setShowCartDrawer] = useState(false);
-
-  const cartCount = getCartCount();
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <>
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 justify-between items-center">
-            <Link href="/" className="flex items-center">
-              <svg className="h-8 w-8 text-blue-600" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-              </svg>
-              <span className="ml-2 text-xl font-semibold text-gray-900">EveraPharma</span>
-            </Link>
-            <div className="flex items-center space-x-4">
-              <Link href="/products" className="text-gray-600 hover:text-gray-900">Products</Link>
-              <Link href="/prescriptions" className="text-gray-600 hover:text-gray-900">Prescriptions</Link>
-              <Link href="/about" className="text-gray-600 hover:text-gray-900">About</Link>
-              <button 
-                className="relative p-2 text-gray-400 hover:text-gray-500"
-                onClick={() => setShowCartDrawer(true)}
+    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 justify-between items-center">
+          {/* Logo */}
+          <Link href="/" className="flex items-center">
+            <div className="flex items-center">
+              <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">A</span>
+              </div>
+              <div className="ml-3">
+                <div className="text-xl font-bold text-gray-900">AdvaCare</div>
+                <div className="text-xs text-blue-600 -mt-1">PHARMA</div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-8">
+            {/* Products Dropdown */}
+            <div className="relative">
+              <button
+                onMouseEnter={() => setIsProductsOpen(true)}
+                onMouseLeave={() => setIsProductsOpen(false)}
+                className="flex items-center text-gray-700 hover:text-blue-600 font-medium transition-colors"
               >
-                <svg className="h-6 w-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                Products
+                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
               </button>
               
-              {isAuthenticated && user ? (
-                <div className="relative">
-                  <button
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none"
-                  >
-                    <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
-                      {user.firstName[0]}{user.lastName[0]}
-                    </div>
-                    <span className="hidden sm:block">{user.firstName}</span>
-                    <svg className="h-4 w-4" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                      <path d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                  </button>
-                  
-                  {showUserMenu && (
-                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                      <div className="py-1">
-                        {user.role === 'ADMIN' && (
-                          <>
-                            <Link
-                              href="/admin"
-                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium"
-                              onClick={() => setShowUserMenu(false)}
-                            >
-                              Admin Dashboard
-                            </Link>
-                            <hr className="my-1" />
-                          </>
-                        )}
-                        <Link
-                          href="/profile"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          My Profile
-                        </Link>
-                        <Link
-                          href="/orders"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => setShowUserMenu(false)}
-                        >
-                          My Orders
-                        </Link>
-                        <hr className="my-1" />
-                        <button
-                          onClick={() => {
-                            logout();
-                            setShowUserMenu(false);
-                          }}
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        >
-                          Logout
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex items-center space-x-3">
-                  <Link href="/login" className="text-gray-600 hover:text-gray-900">
-                    Login
+              {isProductsOpen && (
+                <div
+                  onMouseEnter={() => setIsProductsOpen(true)}
+                  onMouseLeave={() => setIsProductsOpen(false)}
+                  className="absolute left-0 mt-0 w-64 bg-white rounded-lg shadow-lg border border-gray-200"
+                >
+                  <Link href="/products/pharmaceuticals" className="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                    <div className="font-medium text-gray-900">Pharmaceuticals</div>
+                    <div className="text-sm text-gray-600">Medicines & therapeutic drugs</div>
                   </Link>
-                  <Link
-                    href="/register"
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700"
-                  >
-                    Register
+                  <Link href="/products/medical-devices" className="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                    <div className="font-medium text-gray-900">Medical Devices</div>
+                    <div className="text-sm text-gray-600">Diagnostic & medical equipment</div>
+                  </Link>
+                  <Link href="/products/supplements" className="block px-4 py-3 hover:bg-gray-50 border-b border-gray-100">
+                    <div className="font-medium text-gray-900">Supplements</div>
+                    <div className="text-sm text-gray-600">Vitamins & nutritional products</div>
+                  </Link>
+                  <Link href="/products/veterinary" className="block px-4 py-3 hover:bg-gray-50">
+                    <div className="font-medium text-gray-900">Veterinary</div>
+                    <div className="text-sm text-gray-600">Animal health solutions</div>
                   </Link>
                 </div>
               )}
             </div>
-          </div>
-        </nav>
-      </header>
 
-      <CartDrawer isOpen={showCartDrawer} onClose={() => setShowCartDrawer(false)} />
-    </>
+            <Link href="/distribute-with-us" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Distribute with Us
+            </Link>
+            <Link href="/your-health" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Your Health
+            </Link>
+            <Link href="/company" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Company
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Contact Us
+            </Link>
+            <Link href="/media" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              Media
+            </Link>
+            <Link href="/faq" className="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+              FAQ
+            </Link>
+
+            {/* Language Selector */}
+            <div className="flex items-center space-x-2 pl-8 border-l border-gray-300">
+              <svg className="h-5 w-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              <select className="text-sm text-gray-700 bg-transparent border-none focus:outline-none cursor-pointer">
+                <option>EN</option>
+                <option>ES</option>
+                <option>FR</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-gray-600 hover:text-gray-900"
+          >
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {isMobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-gray-200">
+            <div className="space-y-1">
+              <div className="pb-2">
+                <div className="font-medium text-gray-900 px-4 py-2">Products</div>
+                <Link href="/products/pharmaceuticals" className="block pl-8 pr-4 py-2 text-gray-600 hover:text-blue-600">
+                  Pharmaceuticals
+                </Link>
+                <Link href="/products/medical-devices" className="block pl-8 pr-4 py-2 text-gray-600 hover:text-blue-600">
+                  Medical Devices
+                </Link>
+                <Link href="/products/supplements" className="block pl-8 pr-4 py-2 text-gray-600 hover:text-blue-600">
+                  Supplements
+                </Link>
+                <Link href="/products/veterinary" className="block pl-8 pr-4 py-2 text-gray-600 hover:text-blue-600">
+                  Veterinary
+                </Link>
+              </div>
+              <Link href="/distribute-with-us" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                Distribute with Us
+              </Link>
+              <Link href="/your-health" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                Your Health
+              </Link>
+              <Link href="/company" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                Company
+              </Link>
+              <Link href="/contact" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                Contact Us
+              </Link>
+              <Link href="/media" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                Media
+              </Link>
+              <Link href="/faq" className="block px-4 py-2 text-gray-700 hover:text-blue-600">
+                FAQ
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
   );
 }
