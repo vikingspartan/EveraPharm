@@ -76,4 +76,10 @@ echo "   Web App: curl http://your-server-ip:3001"
 echo "   Nginx: curl http://your-server-ip"
 
 echo ""
-echo "⚠️  Note: This is HTTP only. Set up SSL certificates after confirming everything works!" 
+echo "⚠️  Note: This is HTTP only. Set up SSL certificates after confirming everything works!"
+
+# Check API logs
+docker-compose logs api --tail=20
+
+# Restart the API
+docker-compose restart api 
