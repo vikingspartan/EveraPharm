@@ -7,9 +7,8 @@ import Footer from "../components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AdvaCare Pharma - Leading Global Pharmaceutical Manufacturer",
-  description: "We manufacture and distribute more than 4,000 medical products globally. Join our network of distributors, hospitals, pharmacies and institutions.",
-  keywords: "pharmaceutical manufacturer, medical devices, supplements, veterinary products, global distributor, healthcare manufacturing",
+  title: "EveraPharm - Leading Global Pharmaceutical Manufacturer",
+  description: 'A global pharmaceutical company',
 };
 
 export default function RootLayout({

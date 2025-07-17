@@ -2,9 +2,9 @@
 
 // import { useState } from 'react';
 import Link from "next/link";
-import Image from "next/image";
-import HeroSection from '../components/home/HeroSection';
-import ProductCard from '../components/products/ProductCard';
+// import Image from "next/image";
+// import HeroSection from '../components/home/HeroSection';
+// import ProductCard from '../components/products/ProductCard';
 // import CartDrawer from '../components/cart/CartDrawer';
 
 // Sample featured products data
@@ -130,7 +130,7 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Welcome to AdvaCare Pharma
+              Welcome to EveraPharm
             </h1>
             <p className="text-xl sm:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
               We are a leading global pharmaceutical and healthcare manufacturer.
@@ -246,11 +246,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Why AdvaCare Pharma */}
+      {/* Why EveraPharm */}
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why AdvaCare Pharma?</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Why EveraPharm?</h2>
             <p className="text-xl text-gray-600">
               As an industry leader, we are aware of our responsibility to provide affordable 
               and sustainable solutions to improve healthcare worldwide.
@@ -342,9 +342,9 @@ export default function HomePage() {
                 </svg>
               </div>
               <p className="text-gray-600 mb-6">
-                For us, building relationships is the most important aspect. AdvaCare Pharma has made this possible 
+                For us, building relationships is the most important aspect. EveraPharm has made this possible 
                 and now we have a portfolio of established brands in the West African Region. As an experienced 
-                manufacturer, AdvaCare Pharma understands us and our clients in the best way possible. 
+                manufacturer, EveraPharm understands us and our clients in the best way possible. 
                 We are very satisfied with them as partners.
               </p>
               <div>
@@ -360,8 +360,8 @@ export default function HomePage() {
                 </svg>
               </div>
               <p className="text-gray-600 mb-6">
-                We have been working with AdvaCare Pharma for the past 8 years and we are highly satisfied. 
-                The benefit to our business is the convenience and simplicity AdvaCare Pharma offers. 
+                We have been working with EveraPharm for the past 8 years and we are highly satisfied. 
+                The benefit to our business is the convenience and simplicity EveraPharm offers. 
                 Instead of having to source products from different suppliers, we just have one partner, 
                 saving time and money.
               </p>
@@ -379,7 +379,7 @@ export default function HomePage() {
               </div>
               <p className="text-gray-600 mb-6">
                 As the COVID pandemic emerged, 2020 was a year defined by perseverance. We were lucky enough 
-                that AdvaCare Pharma supported us with their expertise and resources. Together we developed 
+                that EveraPharm supported us with their expertise and resources. Together we developed 
                 the ability to adapt amid the uncertainty of the pandemic; and from all barriers we created 
                 an opportunity.
               </p>
