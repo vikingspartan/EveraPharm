@@ -3,12 +3,23 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
+  "license": "MIT",
+  "files": [
+    "base.js",
+    "next.js",
+    "react-internal.js",
+    "nest.js"
+  ],
   "exports": {
     "./base": "./base.js",
     "./next-js": "./next.js",
-    "./react-internal": "./react-internal.js"
+    "./react-internal": "./react-internal.js",
+    "./nest": "./nest.js"
   },
-  "devDependencies": {
+  "scripts": {
+    "clean": "rm -rf .turbo && rm -rf node_modules"
+  },
+  "dependencies": {
     "@eslint/js": "^9.27.0",
     "@next/eslint-plugin-next": "^15.3.0",
     "eslint": "^9.27.0",
