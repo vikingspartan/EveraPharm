@@ -22,7 +22,7 @@ RUN npm ci
 COPY . .
 
 # Generate Prisma Client
-RUN cd packages/database && npx prisma generate
+RUN cd packages/database && PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 npx prisma generate
 
 # Build the application
 RUN npm run build --workspace=apps/api
