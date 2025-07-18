@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-slim AS builder
+FROM node:20-slim AS builder
 
 # Install OpenSSL and other dependencies
 RUN apt-get update -y && \
@@ -28,7 +28,7 @@ RUN cd packages/database && npx prisma generate
 RUN npm run build --workspace=apps/api
 
 # Production stage
-FROM node:18-slim
+FROM node:20-slim
 
 # Install OpenSSL and curl for health checks
 RUN apt-get update -y && \
