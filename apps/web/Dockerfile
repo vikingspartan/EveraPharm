@@ -23,13 +23,13 @@ RUN npm run build --workspace=@repo/ui
 # Build the application
 RUN npm run build --workspace=apps/web
 
+
 # Production stage
 FROM node:20-slim
 
 WORKDIR /app
 
 # Copy built application from the standalone output
-# This includes all necessary production node_modules
 COPY --from=builder /app/apps/web/.next/standalone ./
 COPY --from=builder /app/apps/web/.next/static ./.next/static
 COPY --from=builder /app/apps/web/public ./public
@@ -42,4 +42,4 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Start the application using the standalone server file
-CMD ["node", "server.js"] 
+CMD ["node", "server.js"]
