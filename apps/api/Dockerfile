@@ -54,9 +54,6 @@ COPY --from=builder /app/packages ./packages
 # Copy Prisma schema for migrations
 COPY packages/database/prisma ./packages/database/prisma
 
-# Generate Prisma Client in production stage
-RUN cd packages/database && npx prisma generate
-
 # Expose port
 EXPOSE 3000
 
