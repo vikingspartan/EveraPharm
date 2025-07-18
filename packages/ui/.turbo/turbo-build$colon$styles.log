@@ -1,0 +1,9 @@
+
+
+> @repo/ui@0.0.0 build:styles
+> tailwindcss -i ./src/styles.css -o ./dist/index.css
+
+[1G[0K[3m[1m[34m≈[39m[22m[23m tailwindcss [34mv4.1.8[39m
+
+Done in [32m17ms[39m
+[1G[0K⠙[1G[0K

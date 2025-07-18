@@ -1,0 +1,339 @@
+
+
+> @apps/api@0.0.1 build
+> nest build
+
+[1G[0K[1m[31mERROR[39m[22m in [1m../../node_modules/@mapbox/node-pre-gyp/lib/util/nw-pre-gyp/index.html[39m[22m [1m[32m1:0[39m[22m
+[1mModule parse [1m[31mfailed[39m[22m[1m: [1m[31mUnexpected[39m[22m[1m token (1:0)
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+> <!doctype html>
+| <html>
+| <head>[39m[22m
+ @ ../../node_modules/@mapbox/node-pre-gyp/lib/ sync ^\.\/.*$ ./util/nw-pre-gyp/index.html
+ @ ../../node_modules/@mapbox/node-pre-gyp/lib/node-pre-gyp.js 86:13-36 291:36-53
+ @ ../../node_modules/bcrypt/bcrypt.js 3:17-48
+ @ ./src/auth/auth.service.ts 50:28-45
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m../../node_modules/@mapbox/node-pre-gyp/lib/util/s3_setup.js[39m[22m [1m[32m43:20-42[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'mock-aws-s3' in '/Users/solar/Documents/GitHub/everapharm/node_modules/@mapbox/node-pre-gyp/lib/util'[39m[22m
+ @ ../../node_modules/@mapbox/node-pre-gyp/lib/node-pre-gyp.js 15:21-62
+ @ ../../node_modules/bcrypt/bcrypt.js 3:17-48
+ @ ./src/auth/auth.service.ts 50:28-45
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m../../node_modules/@mapbox/node-pre-gyp/lib/util/s3_setup.js[39m[22m [1m[32m76:14-32[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'aws-sdk' in '/Users/solar/Documents/GitHub/everapharm/node_modules/@mapbox/node-pre-gyp/lib/util'[39m[22m
+ @ ../../node_modules/@mapbox/node-pre-gyp/lib/node-pre-gyp.js 15:21-62
+ @ ../../node_modules/bcrypt/bcrypt.js 3:17-48
+ @ ./src/auth/auth.service.ts 50:28-45
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m../../node_modules/@mapbox/node-pre-gyp/lib/util/s3_setup.js[39m[22m [1m[32m112:15-30[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve 'nock' in '/Users/solar/Documents/GitHub/everapharm/node_modules/@mapbox/node-pre-gyp/lib/util'[39m[22m
+ @ ../../node_modules/@mapbox/node-pre-gyp/lib/node-pre-gyp.js 15:21-62
+ @ ../../node_modules/bcrypt/bcrypt.js 3:17-48
+ @ ./src/auth/auth.service.ts 50:28-45
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m12:23-54[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './users/users.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m13:26-63[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './products/products.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m14:24-57[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './orders/orders.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m15:31-78[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './prescriptions/prescriptions.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m16:27-66[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './inventory/inventory.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m17:28-69[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './categories/categories.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m18:27-66[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './suppliers/suppliers.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m19:27-66[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './analytics/analytics.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src'[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts[39m[22m [1m[32m19:27-56[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './local-auth.guard' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/auth/auth.module.ts 14:26-54
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts[39m[22m [1m[32m20:26-58[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './dto/create-user.dto' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/auth/auth.module.ts 14:26-54
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts[39m[22m [1m[32m21:20-46[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './dto/login.dto' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/auth/auth.module.ts 14:26-54
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/auth/auth.module.ts 14:26-54
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts[39m[22m [1m[32m15:23-48[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './jwt.strategy' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts[39m[22m [1m[32m16:25-52[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve './local.strategy' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts[39m[22m [1m[32m17:23-55[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '../users/users.module' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.service.ts[39m[22m [1m[32m49:24-57[39m[22m
+[1mModule [1m[31mnot found[39m[22m[1m: [1m[31mError[39m[22m[1m: Can't resolve '../users/users.service' in '/Users/solar/Documents/GitHub/everapharm/apps/api/src/auth'[39m[22m
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.service.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/auth/auth.module.ts 13:23-48
+ @ ./src/app.module.ts 11:22-51
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/database/database.module.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/app.module.ts 20:26-63
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/database/prisma.service.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/database/database.module.ts 11:25-52
+ @ ./src/app.module.ts 20:26-63
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/health/health.controller.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/health/health.module.ts 11:28-58
+ @ ./src/app.module.ts 21:24-57
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/health/health.module.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+ @ ./src/app.module.ts 21:24-57
+ @ ./src/main.ts 5:21-44
+
+[1m[31mERROR[39m[22m in [1m./src/main.ts[39m[22m [1m[32m[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+
+[1m[31mERROR[39m[22m in [1m/Users/solar/Documents/GitHub/everapharm/apps/api/tsconfig.build.json[39m[22m
+[1m./src/main.ts[39m[22m [1m[32m/Users/solar/Documents/GitHub/everapharm/apps/api/tsconfig.build.json[39m[22m
+[90m[tsl] [39m[1m[31mERROR[39m[22m
+[1m[31m      TS5110: Option 'module' must be set to 'NodeNext' when option 'moduleResolution' is set to 'NodeNext'.[39m[22m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:3:29[39m[22m
+[90mTS2307: [39mCannot find module './users/users.module' or its corresponding type declarations.
+  [0m [90m 1 |[39m [36mimport[39m { [33mModule[39m } [36mfrom[39m [32m'@nestjs/common'[39m[33m;[39m
+   [90m 2 |[39m [36mimport[39m { [33mAuthModule[39m } [36mfrom[39m [32m'./auth/auth.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'./users/users.module'[39m[33m;[39m
+   [90m   |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 4 |[39m [36mimport[39m { [33mProductsModule[39m } [36mfrom[39m [32m'./products/products.module'[39m[33m;[39m
+   [90m 5 |[39m [36mimport[39m { [33mOrdersModule[39m } [36mfrom[39m [32m'./orders/orders.module'[39m[33m;[39m
+   [90m 6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:4:32[39m[22m
+[90mTS2307: [39mCannot find module './products/products.module' or its corresponding type declarations.
+  [0m [90m 2 |[39m [36mimport[39m { [33mAuthModule[39m } [36mfrom[39m [32m'./auth/auth.module'[39m[33m;[39m
+   [90m 3 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'./users/users.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { [33mProductsModule[39m } [36mfrom[39m [32m'./products/products.module'[39m[33m;[39m
+   [90m   |[39m                                [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 5 |[39m [36mimport[39m { [33mOrdersModule[39m } [36mfrom[39m [32m'./orders/orders.module'[39m[33m;[39m
+   [90m 6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m
+   [90m 7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:5:30[39m[22m
+[90mTS2307: [39mCannot find module './orders/orders.module' or its corresponding type declarations.
+  [0m [90m 3 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'./users/users.module'[39m[33m;[39m
+   [90m 4 |[39m [36mimport[39m { [33mProductsModule[39m } [36mfrom[39m [32m'./products/products.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mOrdersModule[39m } [36mfrom[39m [32m'./orders/orders.module'[39m[33m;[39m
+   [90m   |[39m                              [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m
+   [90m 7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m
+   [90m 8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:6:37[39m[22m
+[90mTS2307: [39mCannot find module './prescriptions/prescriptions.module' or its corresponding type declarations.
+  [0m [90m 4 |[39m [36mimport[39m { [33mProductsModule[39m } [36mfrom[39m [32m'./products/products.module'[39m[33m;[39m
+   [90m 5 |[39m [36mimport[39m { [33mOrdersModule[39m } [36mfrom[39m [32m'./orders/orders.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m
+   [90m   |[39m                                     [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m
+   [90m 8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m
+   [90m 9 |[39m [36mimport[39m { [33mSuppliersModule[39m } [36mfrom[39m [32m'./suppliers/suppliers.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:7:33[39m[22m
+[90mTS2307: [39mCannot find module './inventory/inventory.module' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mOrdersModule[39m } [36mfrom[39m [32m'./orders/orders.module'[39m[33m;[39m
+   [90m  6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m
+   [90m    |[39m                                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m  8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m
+   [90m  9 |[39m [36mimport[39m { [33mSuppliersModule[39m } [36mfrom[39m [32m'./suppliers/suppliers.module'[39m[33m;[39m
+   [90m 10 |[39m [36mimport[39m { [33mAnalyticsModule[39m } [36mfrom[39m [32m'./analytics/analytics.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:8:34[39m[22m
+[90mTS2307: [39mCannot find module './categories/categories.module' or its corresponding type declarations.
+  [0m [90m  6 |[39m [36mimport[39m { [33mPrescriptionsModule[39m } [36mfrom[39m [32m'./prescriptions/prescriptions.module'[39m[33m;[39m
+   [90m  7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m  8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m
+   [90m    |[39m                                  [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m  9 |[39m [36mimport[39m { [33mSuppliersModule[39m } [36mfrom[39m [32m'./suppliers/suppliers.module'[39m[33m;[39m
+   [90m 10 |[39m [36mimport[39m { [33mAnalyticsModule[39m } [36mfrom[39m [32m'./analytics/analytics.module'[39m[33m;[39m
+   [90m 11 |[39m [36mimport[39m { [33mDatabaseModule[39m } [36mfrom[39m [32m'./database/database.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:9:33[39m[22m
+[90mTS2307: [39mCannot find module './suppliers/suppliers.module' or its corresponding type declarations.
+  [0m [90m  7 |[39m [36mimport[39m { [33mInventoryModule[39m } [36mfrom[39m [32m'./inventory/inventory.module'[39m[33m;[39m
+   [90m  8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m  9 |[39m [36mimport[39m { [33mSuppliersModule[39m } [36mfrom[39m [32m'./suppliers/suppliers.module'[39m[33m;[39m
+   [90m    |[39m                                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 10 |[39m [36mimport[39m { [33mAnalyticsModule[39m } [36mfrom[39m [32m'./analytics/analytics.module'[39m[33m;[39m
+   [90m 11 |[39m [36mimport[39m { [33mDatabaseModule[39m } [36mfrom[39m [32m'./database/database.module'[39m[33m;[39m
+   [90m 12 |[39m [36mimport[39m { [33mHealthModule[39m } [36mfrom[39m [32m'./health/health.module'[39m[33m;[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/app.module.ts:10:33[39m[22m
+[90mTS2307: [39mCannot find module './analytics/analytics.module' or its corresponding type declarations.
+  [0m [90m  8 |[39m [36mimport[39m { [33mCategoriesModule[39m } [36mfrom[39m [32m'./categories/categories.module'[39m[33m;[39m
+   [90m  9 |[39m [36mimport[39m { [33mSuppliersModule[39m } [36mfrom[39m [32m'./suppliers/suppliers.module'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 10 |[39m [36mimport[39m { [33mAnalyticsModule[39m } [36mfrom[39m [32m'./analytics/analytics.module'[39m[33m;[39m
+   [90m    |[39m                                 [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 11 |[39m [36mimport[39m { [33mDatabaseModule[39m } [36mfrom[39m [32m'./database/database.module'[39m[33m;[39m
+   [90m 12 |[39m [36mimport[39m { [33mHealthModule[39m } [36mfrom[39m [32m'./health/health.module'[39m[33m;[39m
+   [90m 13 |[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts:3:32[39m[22m
+[90mTS2307: [39mCannot find module './local-auth.guard' or its corresponding type declarations.
+  [0m [90m 1 |[39m [36mimport[39m { [33mController[39m[33m,[39m [33mPost[39m[33m,[39m [33mBody[39m[33m,[39m [33mUseGuards[39m[33m,[39m [33mRequest[39m } [36mfrom[39m [32m'@nestjs/common'[39m[33m;[39m
+   [90m 2 |[39m [36mimport[39m { [33mAuthService[39m } [36mfrom[39m [32m'./auth.service'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { [33mLocalAuthGuard[39m } [36mfrom[39m [32m'./local-auth.guard'[39m[33m;[39m
+   [90m   |[39m                                [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 4 |[39m [36mimport[39m { [33mCreateUserDto[39m } [36mfrom[39m [32m'./dto/create-user.dto'[39m[33m;[39m
+   [90m 5 |[39m [36mimport[39m { [33mLoginDto[39m } [36mfrom[39m [32m'./dto/login.dto'[39m[33m;[39m
+   [90m 6 |[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts:4:31[39m[22m
+[90mTS2307: [39mCannot find module './dto/create-user.dto' or its corresponding type declarations.
+  [0m [90m 2 |[39m [36mimport[39m { [33mAuthService[39m } [36mfrom[39m [32m'./auth.service'[39m[33m;[39m
+   [90m 3 |[39m [36mimport[39m { [33mLocalAuthGuard[39m } [36mfrom[39m [32m'./local-auth.guard'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 4 |[39m [36mimport[39m { [33mCreateUserDto[39m } [36mfrom[39m [32m'./dto/create-user.dto'[39m[33m;[39m
+   [90m   |[39m                               [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 5 |[39m [36mimport[39m { [33mLoginDto[39m } [36mfrom[39m [32m'./dto/login.dto'[39m[33m;[39m
+   [90m 6 |[39m
+   [90m 7 |[39m [33m@[39m[33mController[39m([32m'auth'[39m)[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.controller.ts:5:26[39m[22m
+[90mTS2307: [39mCannot find module './dto/login.dto' or its corresponding type declarations.
+  [0m [90m 3 |[39m [36mimport[39m { [33mLocalAuthGuard[39m } [36mfrom[39m [32m'./local-auth.guard'[39m[33m;[39m
+   [90m 4 |[39m [36mimport[39m { [33mCreateUserDto[39m } [36mfrom[39m [32m'./dto/create-user.dto'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 5 |[39m [36mimport[39m { [33mLoginDto[39m } [36mfrom[39m [32m'./dto/login.dto'[39m[33m;[39m
+   [90m   |[39m                          [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 6 |[39m
+   [90m 7 |[39m [33m@[39m[33mController[39m([32m'auth'[39m)
+   [90m 8 |[39m [36mexport[39m [36mclass[39m [33mAuthController[39m {[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts:6:29[39m[22m
+[90mTS2307: [39mCannot find module './jwt.strategy' or its corresponding type declarations.
+  [0m [90m 4 |[39m [36mimport[39m { [33mAuthService[39m } [36mfrom[39m [32m'./auth.service'[39m[33m;[39m
+   [90m 5 |[39m [36mimport[39m { [33mAuthController[39m } [36mfrom[39m [32m'./auth.controller'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 6 |[39m [36mimport[39m { [33mJwtStrategy[39m } [36mfrom[39m [32m'./jwt.strategy'[39m[33m;[39m
+   [90m   |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 7 |[39m [36mimport[39m { [33mLocalStrategy[39m } [36mfrom[39m [32m'./local.strategy'[39m[33m;[39m
+   [90m 8 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'../users/users.module'[39m[33m;[39m
+   [90m 9 |[39m[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts:7:31[39m[22m
+[90mTS2307: [39mCannot find module './local.strategy' or its corresponding type declarations.
+  [0m [90m  5 |[39m [36mimport[39m { [33mAuthController[39m } [36mfrom[39m [32m'./auth.controller'[39m[33m;[39m
+   [90m  6 |[39m [36mimport[39m { [33mJwtStrategy[39m } [36mfrom[39m [32m'./jwt.strategy'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m  7 |[39m [36mimport[39m { [33mLocalStrategy[39m } [36mfrom[39m [32m'./local.strategy'[39m[33m;[39m
+   [90m    |[39m                               [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m  8 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'../users/users.module'[39m[33m;[39m
+   [90m  9 |[39m
+   [90m 10 |[39m [33m@[39m[33mModule[39m({[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.module.ts:8:29[39m[22m
+[90mTS2307: [39mCannot find module '../users/users.module' or its corresponding type declarations.
+  [0m [90m  6 |[39m [36mimport[39m { [33mJwtStrategy[39m } [36mfrom[39m [32m'./jwt.strategy'[39m[33m;[39m
+   [90m  7 |[39m [36mimport[39m { [33mLocalStrategy[39m } [36mfrom[39m [32m'./local.strategy'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m  8 |[39m [36mimport[39m { [33mUsersModule[39m } [36mfrom[39m [32m'../users/users.module'[39m[33m;[39m
+   [90m    |[39m                             [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m  9 |[39m
+   [90m 10 |[39m [33m@[39m[33mModule[39m({
+   [90m 11 |[39m   imports[33m:[39m [[0m
+
+[1m[31mERROR[39m[22m in [1m./src/auth/auth.service.ts:3:30[39m[22m
+[90mTS2307: [39mCannot find module '../users/users.service' or its corresponding type declarations.
+  [0m [90m 1 |[39m [36mimport[39m { [33mInjectable[39m[33m,[39m [33mUnauthorizedException[39m } [36mfrom[39m [32m'@nestjs/common'[39m[33m;[39m
+   [90m 2 |[39m [36mimport[39m { [33mJwtService[39m } [36mfrom[39m [32m'@nestjs/jwt'[39m[33m;[39m
+  [31m[1m>[22m[39m[90m 3 |[39m [36mimport[39m { [33mUsersService[39m } [36mfrom[39m [32m'../users/users.service'[39m[33m;[39m
+   [90m   |[39m                              [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+   [90m 4 |[39m [36mimport[39m [33m*[39m [36mas[39m bcrypt [36mfrom[39m [32m'bcrypt'[39m[33m;[39m
+   [90m 5 |[39m
+   [90m 6 |[39m [33m@[39m[33mInjectable[39m()[0m
+
+[1m[33m28 errors have detailed information that is not shown.
+Use 'stats.errorDetails: true' resp. '--stats-error-details' to show it.[39m[22m
+
+webpack 5.97.1 compiled with [1m[31m44 errors[39m[22m in 1041 ms
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m Lifecycle script `build` failed with error:
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcode[39m [33m1[39m
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mpath[39m /Users/solar/Documents/GitHub/everapharm/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mworkspace[39m @apps/api@0.0.1
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mlocation[39m /Users/solar/Documents/GitHub/everapharm/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m command failed
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcommand[39m sh -c nest build
+[1G[0K⠙[1G[0K

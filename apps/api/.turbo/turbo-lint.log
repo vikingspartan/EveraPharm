@@ -1,0 +1,30 @@
+
+
+> @apps/api@0.0.1 lint
+> eslint "{src,apps,libs,test}/**/*.ts" --fix
+
+[1G[0K
+Oops! Something went wrong! :(
+
+ESLint: 8.57.1
+
+Error [ERR_PACKAGE_PATH_NOT_EXPORTED]: Package subpath './nest' is not defined by "exports" in /Users/solar/Documents/GitHub/everapharm/node_modules/@repo/eslint-config/package.json
+Referenced from: /Users/solar/Documents/GitHub/everapharm/apps/api/.eslintrc.js
+    at exportsNotFound (node:internal/modules/esm/resolve:314:10)
+    at packageExportsResolve (node:internal/modules/esm/resolve:661:9)
+    at resolveExports (node:internal/modules/cjs/loader:661:36)
+    at Function._findPath (node:internal/modules/cjs/loader:753:31)
+    at Function._resolveFilename (node:internal/modules/cjs/loader:1391:27)
+    at Function.resolve (node:internal/modules/helpers:145:19)
+    at Object.resolve (/Users/solar/Documents/GitHub/everapharm/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:2346:46)
+    at ConfigArrayFactory._loadExtendedShareableConfig (/Users/solar/Documents/GitHub/everapharm/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3275:33)
+    at ConfigArrayFactory._loadExtends (/Users/solar/Documents/GitHub/everapharm/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3156:25)
+    at ConfigArrayFactory._normalizeObjectConfigDataBody (/Users/solar/Documents/GitHub/everapharm/node_modules/eslint/node_modules/@eslint/eslintrc/dist/eslintrc.cjs:3095:25)
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m Lifecycle script `lint` failed with error:
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcode[39m [33m2[39m
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mpath[39m /Users/solar/Documents/GitHub/everapharm/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mworkspace[39m @apps/api@0.0.1
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mlocation[39m /Users/solar/Documents/GitHub/everapharm/apps/api
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m command failed
+[1G[0K⠙[1G[0K[1mnpm[22m [31merror[39m [94mcommand[39m sh -c eslint "{src,apps,libs,test}/**/*.ts" --fix
+[1G[0K⠙[1G[0K

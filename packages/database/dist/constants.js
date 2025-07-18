@@ -1,0 +1,105 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AUDIT_ACTIONS = exports.ERROR_CODES = exports.DOSAGE_FORMS = exports.PAYMENT_STATUSES = exports.PAYMENT_METHODS = exports.PURCHASE_ORDER_STATUSES = exports.PRODUCT_TYPES = exports.PRESCRIPTION_STATUSES = exports.ORDER_STATUSES = exports.USER_ROLES = exports.DEFAULT_TAX_RATE = exports.ORDER_EXPIRY_HOURS = exports.CRITICAL_STOCK_THRESHOLD_PERCENTAGE = exports.LOW_STOCK_THRESHOLD_PERCENTAGE = exports.EXPIRY_WARNING_DAYS = exports.DEFAULT_PRESCRIPTION_VALIDITY_DAYS = exports.MAX_PAGE_SIZE = exports.DEFAULT_PAGE_SIZE = void 0;
+// Pagination defaults
+exports.DEFAULT_PAGE_SIZE = 20;
+exports.MAX_PAGE_SIZE = 100;
+// Date constants
+exports.DEFAULT_PRESCRIPTION_VALIDITY_DAYS = 30;
+exports.EXPIRY_WARNING_DAYS = 90;
+// Inventory constants
+exports.LOW_STOCK_THRESHOLD_PERCENTAGE = 20;
+exports.CRITICAL_STOCK_THRESHOLD_PERCENTAGE = 10;
+// Order constants
+exports.ORDER_EXPIRY_HOURS = 24;
+exports.DEFAULT_TAX_RATE = 0.08; // 8%
+// User roles
+exports.USER_ROLES = {
+    ADMIN: 'ADMIN',
+    PHARMACIST: 'PHARMACIST',
+    CUSTOMER: 'CUSTOMER',
+    SUPPLIER: 'SUPPLIER'
+};
+// Order statuses
+exports.ORDER_STATUSES = {
+    PENDING: 'PENDING',
+    PROCESSING: 'PROCESSING',
+    COMPLETED: 'COMPLETED',
+    CANCELLED: 'CANCELLED',
+    REFUNDED: 'REFUNDED'
+};
+// Prescription statuses
+exports.PRESCRIPTION_STATUSES = {
+    PENDING: 'PENDING',
+    VERIFIED: 'VERIFIED',
+    DISPENSED: 'DISPENSED',
+    EXPIRED: 'EXPIRED',
+    CANCELLED: 'CANCELLED'
+};
+// Product types
+exports.PRODUCT_TYPES = {
+    MEDICINE: 'MEDICINE',
+    MEDICAL_DEVICE: 'MEDICAL_DEVICE',
+    SUPPLEMENT: 'SUPPLEMENT',
+    COSMETIC: 'COSMETIC',
+    OTHER: 'OTHER'
+};
+// Purchase order statuses
+exports.PURCHASE_ORDER_STATUSES = {
+    DRAFT: 'draft',
+    SENT: 'sent',
+    RECEIVED: 'received',
+    CANCELLED: 'cancelled'
+};
+// Payment methods
+exports.PAYMENT_METHODS = {
+    CASH: 'CASH',
+    CREDIT_CARD: 'CREDIT_CARD',
+    DEBIT_CARD: 'DEBIT_CARD',
+    INSURANCE: 'INSURANCE',
+    BANK_TRANSFER: 'BANK_TRANSFER'
+};
+// Payment statuses
+exports.PAYMENT_STATUSES = {
+    PENDING: 'PENDING',
+    PROCESSING: 'PROCESSING',
+    COMPLETED: 'COMPLETED',
+    FAILED: 'FAILED',
+    REFUNDED: 'REFUNDED'
+};
+// Dosage forms
+exports.DOSAGE_FORMS = {
+    TABLET: 'Tablet',
+    CAPSULE: 'Capsule',
+    SYRUP: 'Syrup',
+    INJECTION: 'Injection',
+    CREAM: 'Cream',
+    OINTMENT: 'Ointment',
+    DROPS: 'Drops',
+    INHALER: 'Inhaler',
+    PATCH: 'Patch',
+    SUPPOSITORY: 'Suppository'
+};
+// Error codes
+exports.ERROR_CODES = {
+    DUPLICATE_ENTRY: 'DUPLICATE_ENTRY',
+    NOT_FOUND: 'NOT_FOUND',
+    INVALID_DATA: 'INVALID_DATA',
+    UNAUTHORIZED: 'UNAUTHORIZED',
+    FORBIDDEN: 'FORBIDDEN',
+    INSUFFICIENT_STOCK: 'INSUFFICIENT_STOCK',
+    EXPIRED_PRODUCT: 'EXPIRED_PRODUCT',
+    PRESCRIPTION_REQUIRED: 'PRESCRIPTION_REQUIRED',
+    INVALID_PRESCRIPTION: 'INVALID_PRESCRIPTION'
+};
+// Audit actions
+exports.AUDIT_ACTIONS = {
+    CREATE: 'CREATE',
+    UPDATE: 'UPDATE',
+    DELETE: 'DELETE',
+    VIEW: 'VIEW',
+    VERIFY: 'VERIFY',
+    DISPENSE: 'DISPENSE',
+    CANCEL: 'CANCEL',
+    REFUND: 'REFUND'
+};

@@ -1,0 +1,6 @@
+
+
+> @repo/ui@0.0.0 lint
+> eslint src --max-warnings 0
+
+[1G[0K
