@@ -45,6 +45,7 @@ COPY packages/database/package.json ./packages/database/
 # Copy the entire node_modules from the builder stage
 # This includes all production dependencies for all workspaces
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/node_modules/.prisma/client ./node_modules/.prisma/client
 
 # Copy built application
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
