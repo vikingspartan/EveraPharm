@@ -28,7 +28,7 @@ const FEATURED_PRODUCTS = [
   },
   {
     id: '2',
-    name: 'Amoxicillin 500mg',
+    name: 'Amoxicillin 5000mg',
     genericName: 'Amoxicillin',
     manufacturer: 'MediLabs',
     price: '24.99',
