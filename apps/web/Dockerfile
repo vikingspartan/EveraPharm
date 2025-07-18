@@ -23,6 +23,11 @@ RUN npm run build --workspace=@repo/ui
 # Build the application
 RUN npm run build --workspace=apps/web
 
+# Debug: List the contents of the standalone directory
+RUN echo "=== Contents of .next/standalone ===" && \
+    ls -la apps/web/.next/standalone/ && \
+    echo "=== Finding server.js ===" && \
+    find apps/web/.next/standalone -name "server.js" -type f
 
 # Production stage
 FROM node:20-slim
@@ -31,8 +36,8 @@ WORKDIR /app
 
 # Copy built application from the standalone output
 COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./.next/static
-COPY --from=builder /app/apps/web/public ./public
+COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder /app/apps/web/public ./apps/web/public
 
 # Expose port
 EXPOSE 3000
@@ -42,4 +47,4 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Start the application using the standalone server file
-CMD ["node", "server.js"]
+CMD ["node", "apps/web/server.js"]
