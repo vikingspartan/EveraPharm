@@ -37,6 +37,11 @@ RUN apt-get update -y && \
 
 WORKDIR /app
 
+# Copy package.json files to allow running npm scripts
+COPY package.json ./
+COPY apps/api/package.json ./apps/api/
+COPY packages/database/package.json ./packages/database/
+
 # Copy the entire node_modules from the builder stage
 # This includes all production dependencies for all workspaces
 COPY --from=builder /app/node_modules ./node_modules
