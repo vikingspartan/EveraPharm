@@ -7,9 +7,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U everapharm_user"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 60s # Optimized from 10s to reduce CPU usage
+      timeout: 10s
+      retries: 3
 
   web:
     command: sh -c "cd apps/web && npx next start -p 3000"
