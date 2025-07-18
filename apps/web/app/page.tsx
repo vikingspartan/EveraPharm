@@ -133,11 +133,11 @@ export default function HomePage() {
               Welcome to EveraPharm
             </h1>
             <p className="text-xl sm:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
-              We are a leading global pharmaceutical and healthcare manufacturer.
+              We are a leading global pharmaceutical and healthcare distributor.
             </p>
             <div className="space-y-4">
               <p className="text-lg text-blue-200">
-                We manufacture and distribute more than 4,000 medical products globally
+                We partner with manufacturers to distribute more than 4,000 medical products globally
               </p>
               <p className="text-lg text-blue-200">
                 We excel at getting our products to those that need them most
