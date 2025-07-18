@@ -37,13 +37,9 @@ RUN apt-get update -y && \
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
-COPY packages/database/package*.json ./packages/database/
-
-# Install production dependencies only
-RUN npm ci --omit=dev
+# Copy the entire node_modules from the builder stage
+# This includes all production dependencies for all workspaces
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built application
 COPY --from=builder /app/apps/api/dist ./apps/api/dist

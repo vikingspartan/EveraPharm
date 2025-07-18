@@ -28,17 +28,11 @@ FROM node:20-slim
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY apps/web/package*.json ./apps/web/
-
-# Install production dependencies
-RUN npm ci --omit=dev --workspace=apps/web
-
-# Copy built application
+# Copy built application from the standalone output
+# This includes all necessary production node_modules
 COPY --from=builder /app/apps/web/.next/standalone ./
-COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/apps/web/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
 
 # Expose port
 EXPOSE 3000
@@ -47,5 +41,5 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Start the application
-CMD ["node", "apps/web/server.js"] 
+# Start the application using the standalone server file
+CMD ["node", "server.js"] 
