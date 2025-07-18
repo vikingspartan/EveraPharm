@@ -53,6 +53,7 @@ COPY --from=builder /app/node_modules/.prisma/client ./node_modules/.prisma/clie
 # Copy built application
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node .
 
 # Copy Prisma schema for migrations
 COPY packages/database/prisma ./packages/database/prisma
@@ -62,6 +63,7 @@ EXPOSE 3000
 
 # Set environment
 ENV NODE_ENV=production
+ENV PRISMA_QUERY_ENGINE_LIBRARY=./libquery_engine-debian-openssl-3.0.x.so.node
 
 # Start the application
 CMD ["node", "apps/api/dist/main.js"] 
