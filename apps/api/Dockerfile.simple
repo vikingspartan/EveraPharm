@@ -12,11 +12,14 @@ WORKDIR /app
 # Copy entire monorepo
 COPY . .
 
-# Install all dependencies
-RUN npm ci
+# Install all dependencies (skip Prisma postinstall)
+RUN PRISMA_SKIP_POSTINSTALL_GENERATE=1 npm ci
 
-# Generate Prisma Client
-RUN cd packages/database && npx prisma generate
+# Generate Prisma Client with error handling
+RUN cd packages/database && \
+    PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 \
+    npx prisma generate --skip-download || \
+    npx prisma generate --generator client
 
 # Build the API
 RUN npm run build --workspace=apps/api

@@ -11,8 +11,8 @@ COPY packages/tailwind-config/package*.json ./packages/tailwind-config/
 COPY packages/typescript-config/package*.json ./packages/typescript-config/
 COPY packages/eslint-config/package*.json ./packages/eslint-config/
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (skip Prisma postinstall)
+RUN PRISMA_SKIP_POSTINSTALL_GENERATE=1 npm ci
 
 # Copy source code
 COPY . .

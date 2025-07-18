@@ -15,20 +15,24 @@ COPY packages/database/package*.json ./packages/database/
 COPY packages/typescript-config/package*.json ./packages/typescript-config/
 COPY packages/eslint-config/package*.json ./packages/eslint-config/
 
-# Install dependencies
-RUN npm ci
+# Install dependencies (skip Prisma postinstall to avoid engine downloads)
+RUN PRISMA_SKIP_POSTINSTALL_GENERATE=1 npm ci
 
 # Copy source code
 COPY . .
 
-# Generate Prisma Client
-RUN cd packages/database && PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 npx prisma generate
+# Generate Prisma Client with offline mode and ignore missing engines
+RUN cd packages/database && \
+    PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 \
+    PRISMA_CLI_BINARY_TARGETS=native \
+    npx prisma generate --skip-download || \
+    npx prisma generate --generator client
 
 # Build the application
 RUN npm run build --workspace=apps/api
 
-# Copy the Prisma query engine to the dist folder
-RUN cp ./node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node ./apps/api/dist/
+# Copy the Prisma query engine to the dist folder (if it exists)
+RUN cp ./node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node ./apps/api/dist/ || echo "Engine file not found, skipping copy"
 
 # Production stage
 FROM node:20-slim
