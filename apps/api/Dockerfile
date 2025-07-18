@@ -63,7 +63,7 @@ EXPOSE 3000
 
 # Set environment
 ENV NODE_ENV=production
-ENV PRISMA_QUERY_ENGINE_LIBRARY=./libquery_engine-debian-openssl-3.0.x.so.node
+ENV PRISMA_QUERY_ENGINE_LIBRARY=/app/libquery_engine-debian-openssl-3.0.x.so.node
 
 # Start the application
 CMD ["node", "apps/api/dist/main.js"] 
