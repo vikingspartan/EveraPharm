@@ -68,9 +68,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/certs:/etc/nginx/certs
-      - ./nginx/ssl:/etc/letsencrypt
+      - ./nginx/nginx-simple.conf:/etc/nginx/nginx.conf
     depends_on:
       - api
       - web
