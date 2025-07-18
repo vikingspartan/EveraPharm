@@ -27,6 +27,9 @@ RUN cd packages/database && npx prisma generate
 # Build the application
 RUN npm run build --workspace=apps/api
 
+# Copy the Prisma query engine to the dist folder
+RUN cp ./node_modules/.prisma/client/libquery_engine-debian-openssl-3.0.x.so.node ./apps/api/dist/
+
 # Production stage
 FROM node:20-slim
 
