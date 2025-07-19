@@ -344,7 +344,7 @@ export default function HomePage() {
               <p className="text-gray-600 mb-6">
                 For us, building relationships is the most important aspect. EveraPharm has made this possible 
                 and now we have a portfolio of established brands in the West African Region. As an experienced 
-                manufacturer, EveraPharm understands us and our clients in the best way possible. 
+                distributor, EveraPharm understands us and our clients in the best way possible. 
                 We are very satisfied with them as partners.
               </p>
               <div>
@@ -398,7 +398,7 @@ export default function HomePage() {
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Contact Us</h2>
             <p className="text-xl text-blue-100">
-              Talk with a sales advisor to create a customized quotation. Here's how you can reach us...
+              Talk with a sales advisor to create a customized quote. Here's how you can reach us...
             </p>
           </div>
 
