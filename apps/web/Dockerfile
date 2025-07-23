@@ -1,6 +1,10 @@
 # Build stage
 FROM node:20-slim AS builder
 
+# Accept build arguments
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
 WORKDIR /app
 
 # Copy package files

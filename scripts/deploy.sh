@@ -33,7 +33,9 @@ docker-compose build --no-cache
 
 # Stop existing containers
 echo "🛑 Stopping existing containers..."
-docker-compose down
+# Use stop and rm instead of down to handle stuck containers better
+docker-compose stop || true
+docker-compose rm -f || true
 
 # Start database first
 echo "🗄️  Starting database..."

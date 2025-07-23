@@ -12,6 +12,9 @@ services:
       retries: 3
 
   web:
+    build:
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     command: sh -c "cd apps/web && npx next start -p 3000"
     restart: unless-stopped
     environment:
