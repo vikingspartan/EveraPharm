@@ -25,7 +25,11 @@ done
 
 # Pull latest changes
 echo "📥 Pulling latest changes from git..."
+# Stash any local changes to avoid conflicts
+git stash
+# Pull the latest changes
 git pull origin main
+# Note: We don't pop the stash - local changes should be in git, not on server
 
 # Build Docker images
 echo "🔨 Building Docker images..."
