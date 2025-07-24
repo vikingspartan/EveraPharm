@@ -23,10 +23,16 @@ for var in "${required_vars[@]}"; do
     fi
 done
 
+# Configure git safe directory (needed for root deployments)
+git config --global --add safe.directory /opt/everapharm
+
+# Ensure we're using HTTPS for GitHub (no SSH keys needed)
+git remote set-url origin https://github.com/vikingspartan/everapharm.git || true
+
 # Pull latest changes
 echo "📥 Pulling latest changes from git..."
 # Stash any local changes to avoid conflicts
-git stash
+git stash || echo "No local changes to stash"
 # Pull the latest changes
 git pull origin main
 # Note: We don't pop the stash - local changes should be in git, not on server
